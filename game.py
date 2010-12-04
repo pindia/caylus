@@ -23,6 +23,8 @@ class Game(object):
         self.buildings = self.special_buildings + self.normal_buildings
         for building in self.buildings:
             building.owner = None
+            
+        self.wood_buildings = wood_buildings
 
         
     def begin_turn(self):
@@ -35,6 +37,7 @@ class Game(object):
         for player in self.players:
             player.passed = False
             player.workers = 6
+        self.buildings = self.special_buildings + self.normal_buildings
         for building in self.buildings:
             building.worker = None
         
@@ -142,6 +145,7 @@ class Game(object):
                 self.step += 1
             else:
                 self.castle_batches[i] += 1
+                player.points += 5
             self.step_game()
             
     def placement_cost(self, building, player):
