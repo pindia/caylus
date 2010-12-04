@@ -1,4 +1,5 @@
 RESOURCES = ['food', 'wood', 'stone', 'cloth', 'gold']
+COLORS = ['Blue','Red','Green','Orange','Black']
 
 def format_resources(resources):
     out = []
@@ -19,3 +20,9 @@ PHASE_PROVOST = 3
 PHASE_BUILDINGS = 4
 PHASE_CASTLE = 5
 PHASE_END = 6
+
+INITIAL_BAILIFF = 5
+SCORE_DUNGEON = 11
+SCORE_WALLS = 17
+SCORE_TOWERS = 23
+LAST_SPACE = 27

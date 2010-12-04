@@ -1,5 +1,6 @@
 import random
 from player import *
+from textinterface import *
 #from building import *
 
 class Game(object):
@@ -7,7 +8,7 @@ class Game(object):
         self.num_players = players
         self.players = []
         for i in range(self.num_players):
-            player = player_class(self, 'Player %d' % i)
+            player = player_class(self, COLORS[i])
             self.players.append(player)
         
         self.turn = -1
@@ -19,12 +20,17 @@ class Game(object):
         random.shuffle(neutral_buildings)
         self.normal_buildings += neutral_buildings
         self.normal_buildings += fixed_buildings
+        self.normal_buildings += [NullBuilding("Null")] * 7
+        self.normal_buildings += [fixed_gold]
         
         self.buildings = self.special_buildings + self.normal_buildings
         for building in self.buildings:
             building.owner = None
             
         self.wood_buildings = wood_buildings
+        
+        self.bailiff = INITIAL_BAILIFF
+        self.provost = INITIAL_BAILIFF
 
         
     def begin_turn(self):
@@ -59,6 +65,7 @@ class Game(object):
                     current_player = self.players[self.step % self.num_players]
                 available_buildings = [building for building in self.buildings \
                                        if building.worker is None and \
+                                       not isinstance(building, NullBuilding) and \
                                        player.money >= self.placement_cost(building, player) and\
                                        player.workers > 0 and\
                                        (not isinstance(building, CastleBuilding) or player not in self.castle_order)]
@@ -89,7 +96,7 @@ class Game(object):
             self.phase += 1
             self.step = 0
         if self.phase == PHASE_BUILDINGS:
-            common_step_buildings(self.normal_buildings)
+            common_step_buildings([b for i, b in enumerate(self.normal_buildings) if i <= self.provost])
         if self.phase == PHASE_CASTLE:
             if self.step == len(self.castle_order):
                 self.phase += 1
@@ -102,6 +109,8 @@ class Game(object):
                 else:
                     player.make_decision(decision)
         if self.phase == PHASE_END:
+            self.bailiff += 2 if self.provost > self.bailiff else 1
+            self.provost = self.bailiff
             self.begin_turn()
         
             
@@ -159,7 +168,7 @@ class Game(object):
         return len(self.pass_order) + 1
         
 if __name__ == '__main__':
-    game = Game(players=1, player_class=TextPlayer)
+    game = Game(players=2, player_class=TextPlayer)
     while True:
         game.step_game()
         print game.players[0]

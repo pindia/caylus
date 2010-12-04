@@ -21,8 +21,12 @@ class MoveProvostAction(Action):
     def __init__(self, spaces):
         self.spaces = spaces
         
+    def can_execute(self, player):
+        return 0 < player.game.provost + self.spaces < LAST_SPACE
+        
     def execute(self, player):
-        player.game.move_provost(spaces)
+        player.game.provost += self.spaces
+        
     def __repr__(self):
         return 'P%+d' % self.spaces
        
@@ -76,7 +80,10 @@ class ConstructAction(TradeAction):
         player.remove_resources(self.input)
         if self.building in player.game.wood_buildings:
             player.game.wood_buildings.remove(self.building)
-        player.game.normal_buildings.append(self.building)
+        if null_building in player.game.normal_buildings:
+            player.game.normal_buildings[player.game.normal_buildings.index(null_building)] = self.building
+        else:
+            player.game.normal_buildings.append(self.building)
         self.building.owner = player
         self.building.worker = None
         player.points += self.building.points
@@ -130,6 +137,12 @@ class Building(object):
             
     def __repr__(self):
         return '/'.join([str(action) for action in self.actions if not isinstance(action, NullAction)])
+    
+class NullBuilding(Building):
+    def activate(self, player):
+        return ActionDecision(NullAction())
+    def __eq__(self, other):
+        return isinstance(other, NullBuilding)
         
 class MarketBuilding(Building):
     ''' A market building allows the sale of any resource for money'''
@@ -213,12 +226,15 @@ neutral_carpenter = CarpenterBuilding("Carpenter")
 
 fixed_peddler = PeddlerBuilding("Peddler", 2)
 fixed_carpenter = CarpenterBuilding("Carpenter")
+fixed_gold = Building("Gold Mine", ProduceAction(gold=1))
 
 
 
-special_buildings = [castle, trading_post]
+special_buildings = [castle, trading_post, merchant_guild]
 neutral_buildings = [neutral_carpenter, neutral_farm, neutral_forest, neutral_sawmill, neutral_quarry, neutral_market]
 fixed_buildings = [fixed_peddler, fixed_carpenter]
+
+null_building = NullBuilding("Null")
 
 if __name__ == '__main__':
     from player import *

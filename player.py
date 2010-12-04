@@ -31,13 +31,7 @@ class Player(object):
     def __str__(self):
         return str(self.resources)
         
-    def pretty_resources(self):
-        out = ''
-        for resource in RESOURCES:
-            out += resource[0].upper() * self.resources[resource]
-            if out[-1] != ' ':
-                out += ' '
-        return out
+
             
     def get_money(self):
         return self.resources['money']
@@ -51,21 +45,9 @@ class Player(object):
         self.resources['points'] = amt    
     points = property(get_points, set_points)
     
+    @property
+    def initial(self):
+        return self.name[0].upper()
     
-    
-class TextPlayer(Player):
-    def make_decision(self, decision):
-        if isinstance(decision, WorkerDecision):
-            print '%s Placing worker. Workers:%d Money:%d' % (self.name, self.workers, self.money)
-            print self.pretty_resources()
-            for i, building in enumerate(decision.buildings):
-                print '%d: %s' % (i, building)
-            i = int(raw_input('Your decision:'))
-            self.game.make_decision(decision, i)
-        elif isinstance(decision, ActionDecision):
-            print '%s taking action' % (self.name)
-            for i, action in enumerate(decision.actions):
-                print '%d: %s' % (i, action)
-            i = int(raw_input('Your decision:'))
-            self.game.make_decision(decision, i)
+
         
