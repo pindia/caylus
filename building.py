@@ -6,10 +6,6 @@ class Action(object):
     def can_execute(self, player):
         return True
     
-    def is_blocking(self):
-        '''Return whether this action should block execution of the game until part of its
-        execution is finished. i.e. is another decision required after it?'''
-        return False
     
     def execute(self, player):
         raise Exception('Not implented')
@@ -67,11 +63,8 @@ class JoustAction(TradeAction):
         
     def execute(self, player):
         player.remove_resources(self.input)
-        player.game.award_favor(player)
+        player.game.decision_stack.append(FavorTrackDecision(player))
         
-    def is_blocking(self):
-        ''' Requires subsequent selection of which favor to take '''
-        return True
         
     def __repr__(self):
         return '%s->RF' % format_resources(self.input)
@@ -98,6 +91,9 @@ class ConstructAction(TradeAction):
         self.building.owner = player
         self.building.worker = None
         player.points += self.building.points
+        if hasattr(self.building, 'favors'):
+            for i in range(self.building.favors):
+                player.game.decision_stack.append(FavorTrackDecision(player))
         
     def __repr__(self):
         return '%s->[%s]' % (format_resources(self.input), self.building)
@@ -130,14 +126,15 @@ class LawyerAction(TradeAction):
 
 class Decision(object):
     def filter_actions(self):
-        self.actions = [action for action in self.actions if action.can_execute(self.player)]
-    pass
+        pass
 
 class ActionDecision(Decision):
     ''' A decision is a choice between a number of actions '''
     def __init__(self, player, actions):
         self.player = player
         self.actions = actions
+    def filter_actions(self):
+        self.actions = [action for action in self.actions if action.can_execute(self.player)]
         
 class WorkerDecision(Decision):
     def __init__(self, player, buildings):
@@ -174,6 +171,10 @@ class Building(object):
     def constructable(self, points, **cost):
         self.cost = cost
         self.points = points
+        return self
+    
+    def awards_favors(self, num):
+        self.favors = num
         return self
             
     def __repr__(self):
@@ -357,7 +358,7 @@ merchant_guild = GuildBuilding("Merchant's Guild")
 joust_field = Building("Joust Field",JoustAction(), NullAction())
 
 stone_tailor = Building("Tailor", TradeAction({'cloth':2}, {'points':4}), TradeAction({'cloth':3},{'points':6}), NullAction()).constructable(6, stone=1, wood=1)
-stone_church = Building("Church", TradeAction({'money':2}, {'points':3}), TradeAction({'money':4},{'points':5}), NullAction()).constructable(6, stone=1, cloth=1)
+stone_church = Building("Church", TradeAction({'money':2}, {'points':3}), TradeAction({'money':4},{'points':5}), NullAction()).constructable(3, stone=1, cloth=1).awards_favors(1)
 stone_bank = Building("Bank", TradeAction({'money':2}, {'gold':1}), TradeAction({'money':5},{'gold':2}), NullAction()).constructable(6, stone=1, wood=1)
 stone_jeweler = Building("Jeweler", TradeAction({'gold':1}, {'points':5}), TradeAction({'gold':2},{'points':9}), NullAction()).constructable(6, stone=1, cloth=1)
 stone_alchemist = StoneAlchemistBuilding().constructable(6, wood=1, stone=1)

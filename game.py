@@ -155,8 +155,13 @@ class Game(object):
             player = decision.player
             action = decision.actions[i]
             action.execute(player)
-            self.step += 1
-            self.step_game()
+            if self.decision_stack:
+                decision = self.decision_stack.pop()
+                decision.filter_actions()
+                decision.player.make_decision(decision)
+            else:
+                self.step += 1 # We're done with this building
+                self.step_game()
             return
         if self.phase == PHASE_PLACE:
             player = decision.player
@@ -178,28 +183,14 @@ class Game(object):
                 player.workers -= 1
             self.step += 1
             self.step_game()
-        elif self.phase == PHASE_SPECIAL:
+        elif self.phase in [PHASE_SPECIAL, PHASE_BUILDINGS]:
             player = decision.player
             action = decision.actions[i]
             action.execute(player)
-            if not action.is_blocking():
-                self.step += 1
-                self.step_game()
-            #elif self.decision_stack:
-            #    decision = self.decision_stack.pop()
-            #    decision.player.make_decision(decision)
-        elif self.phase == PHASE_BUILDINGS:
-            player = decision.player
-            action = decision.actions[i]
-            action.execute(player)
-            print 'Executed'
             if self.decision_stack:
                 decision = self.decision_stack.pop()
                 decision.filter_actions()
-                if len(decision.actions) > 1:
-                    decision.player.make_decision(decision)
-                else:
-                    self.make_decision(decision, 0)
+                decision.player.make_decision(decision)
             else:
                 self.step += 1 # We're done with this building
                 self.step_game()
