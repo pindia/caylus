@@ -160,6 +160,16 @@ class WorkerDecision(Decision):
 class FavorTrackDecision(Decision):
     def __init__(self, player):
         self.player = player
+        
+    @property
+    def tracks(self):
+        current_time = (self.player.game.turn, self.player.game.phase)
+        if current_time != self.player.when_used:
+            self.player.when_used = current_time
+            self.player.tracks_used = []
+        return [track for track in favor_tracks if track not in self.player.tracks_used]
+            
+        
 
 class FavorDecision(ActionDecision):
     def __init__(self, player, actions):
@@ -367,7 +377,7 @@ class StoneProductionBuilding(CompoundBuilding):
 castle = CastleBuilding()   
 trading_post = Building("Trading Post", ProduceAction(money=3))
 merchant_guild = GuildBuilding("Merchant's Guild")
-joust_field = Building("Joust Field",JoustAction(), NullAction())
+joust_field = Building("Joust Field",NullAction(), JoustAction()))
 
 stone_tailor = Building("Tailor", NullAction(), TradeAction({'cloth':2}, {'points':4}), TradeAction({'cloth':3},{'points':6})).constructable(6, stone=1, wood=1)
 stone_church = Building("Church", NullAction(), TradeAction({'money':2}, {'points':3}), TradeAction({'money':4},{'points':5})).constructable(3, stone=1, cloth=1).awards_favors(1)
@@ -387,7 +397,7 @@ wood_quarry = Building("Quarry", ProduceAction(stone=2)).constructable(2, wood=1
 wood_sawmill = Building("Sawmill", ProduceAction(wood=2)).constructable(2, wood=1, food=1)
 wood_market = MarketBuilding("Market", 6).constructable(2, wood=1, any=1)
 wood_peddler = WoodPeddlerBuilding().constructable(2, wood=1, any=1)
-wood_mason = MasonBuilding("Mason").constructable(4, wood=1, food=1)
+wood_mason = MasonBuilding("Mason").constructable(4, wood=1, food=1).awards_favors(5)
 wood_lawyer = LawyerBuilding("Lawyer").constructable(4, wood=1, cloth=1)
 
 wood_buildings = [wood_farm_food, wood_farm_cloth, wood_quarry, wood_sawmill, wood_market, wood_peddler, wood_mason, wood_lawyer]
@@ -424,6 +434,9 @@ building_track = [Building(None, NullAction()), CarpenterBuilding(None, discount
 
 favor_tracks = [point_track, money_track, resource_track, building_track]
 track_names = ['Points', 'Money', 'Resource', 'Building']
+
+def get_track_name(track):
+    return track_names[favor_tracks.index(track)]
 
 if __name__ == '__main__':
     from player import *

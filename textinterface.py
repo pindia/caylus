@@ -52,8 +52,8 @@ class TextPlayer(Player):
         elif isinstance(decision, FavorTrackDecision):
             print
             print '%s selecting favor' % self.name
-            for i in range(4):
-                print '%d: %s' % (i, track_names[i])
+            for i, track in enumerate(decision.tracks):
+                print '%d: %s' % (i, get_track_name(track))
             i = int(raw_input('Your decision:'))
             print
             self.game.make_decision(decision, i)

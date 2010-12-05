@@ -13,6 +13,7 @@ class Game(object):
         
         self.turn = -1
         self.section = SECTION_DUNGEON
+        self.new_section = SECTION_DUNGEON
         self.spaces = SECTION_SPACES[:]
 
         
@@ -161,7 +162,7 @@ class Game(object):
                             penalty(player, 2)
                         if num >=2:
                             award(player, 1)
-                    self.section = SECTION_WALLS
+                    self.new_section = SECTION_WALLS
                 if self.section == SECTION_WALLS and (self.spaces[SECTION_WALLS] == 0 or self.bailiff >= SCORE_WALLS):
                     self.log('SCORING: Walls')
                     for player in self.players:
@@ -174,7 +175,7 @@ class Game(object):
                             award(player, 2)
                         if num >= 5:
                             award(player, 3)
-                    self.section = SECTION_TOWERS
+                    self.new_section = SECTION_TOWERS
                 if self.section == SECTION_TOWERS and (self.spaces[SECTION_TOWERS] == 0 or self.bailiff >= SCORE_TOWERS):
                     self.log('SCORING: Towers')
                     for player in self.players:
@@ -187,13 +188,14 @@ class Game(object):
                             award(player, 2)
                         if num >= 6:
                             award(player, 3)
-                    self.section = SECTION_OVER
+                    self.new_section = SECTION_OVER
                 if self.decision_stack: # If there were royal favors awarded, start presenting them
                     decision = self.decision_stack.pop()
                     decision.player.make_decision(decision)
                 else:
                     self.phase += 1 # Scoring happened but no favors, continue
         if self.phase == PHASE_END:
+            self.section = self.new_section
             if self.section == SECTION_OVER:
                 return
             self.begin_turn()
@@ -202,17 +204,24 @@ class Game(object):
         
     def make_decision(self, decision, i):
         if isinstance(decision, FavorTrackDecision):
-            track = favor_tracks[i]
             player = decision.player
-            player.favors[i] += 1
-            self.log('%s selects favor track %s', player, track_names[i])
+            if i == -1:
+                self.log('%s cannot select any royal favor tracks', player)
+                self.make_decision(FavorDecision(decision.player, [NullAction()]), 0)
+                return
+            track = decision.tracks[i]
+            abs_index = favor_tracks.index(track)
+            player.tracks_used.append(track)
+            MAX_SPACE = [1, 3, 4]
+            player.favors[abs_index] = min(player.favors[abs_index]+1, MAX_SPACE[self.section])
+            self.log('%s selects favor track %s', player, get_track_name(track))
             if i > 1: # VP and money tracks have no point to selecting lower cells
                 actions = [] # Collect together all the actions
-                for building in track[:player.favors[i]+1]:
+                for building in track[:player.favors[abs_index]+1]:
                     #actions.extend(building.activate(player).actions)
                     actions.append(FavorAction(building))
             else:
-                actions = track[player.favors[i]].activate(player).actions
+                actions = track[player.favors[abs_index]].activate(player).actions
             decision = FavorDecision(player, actions)
             if len(decision.actions) == 1:
                 self.make_decision(decision, 0)
@@ -274,7 +283,7 @@ class Game(object):
                     
             self.step_game()
             
-    def pop_decision_or_continue(self):
+    def pop_decision_or_continue(self, step_after=True):
         ''' Call after a player's decision is processed. Pops a decision from the stack
         and presents it if available, or proceeds if not.'''
         if self.decision_stack:
@@ -282,11 +291,16 @@ class Game(object):
             decision.filter_actions()
             if isinstance(decision, ActionDecision) and len(decision.actions) == 1:
                 self.make_decision(decision, 0)
+            elif isinstance(decision, FavorTrackDecision) and len(decision.tracks) == 1:
+                self.make_decision(decision, 0)
+            elif isinstance(decision, FavorTrackDecision) and len(decision.tracks) == 0:
+                self.make_decision(decision, -1)
             else:
                 decision.player.make_decision(decision)
         else:
             self.step += 1 # We're done with this building
-            self.step_game()
+            if step_after:
+                self.step_game()
         
             
     def award_favor(self, player):
@@ -311,7 +325,7 @@ class Game(object):
         
 if __name__ == '__main__':
     game = Game(players=1, player_class=TextPlayer)
-    #game.players[0].add_resources({'cloth':20, 'food':20, 'wood':20})
+    game.players[0].add_resources({'cloth':20, 'food':20, 'wood':20})
     while game.section != SECTION_OVER:
         game.step_game()
         print game.players[0]

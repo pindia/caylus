@@ -16,6 +16,9 @@ class Player(object):
         self.favors = [-1,-1,-1,-1]
         self.section_batches = [0,0,0]
         
+        self.tracks_used = [] # Which favor tracks have been used this phase
+        self.when_used = (0,0) # The turn and phase, for purpose of resetting the above
+        
     def has_resources(self, resources):
         for resource, amount in resources.items():
             if self.resources[resource] < amount:
