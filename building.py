@@ -90,8 +90,10 @@ class ConstructAction(TradeAction):
             player.game.normal_buildings.append(self.building)
         self.building.owner = player
         self.building.worker = None
+        player.game.log('%s gains %d points from building construction', player, self.building.points)
         player.points += self.building.points
         if hasattr(self.building, 'favors'):
+            player.game.log('%s gains %d royal favors from building construction', player, self.building.favors)
             for i in range(self.building.favors):
                 player.game.decision_stack.append(FavorTrackDecision(player))
         
@@ -123,6 +125,19 @@ class LawyerAction(TradeAction):
         
     def __repr__(self):
         return '[%s]->Residence' % self.target
+
+class FavorAction(Action):
+    ''' A favor action allows the player to select from a number of favors on one track'''
+        
+    def __init__(self, building):
+        self.building = building
+        
+    def execute(self, player):
+        decision = self.building.activate(player)
+        player.game.decision_stack.append(FavorDecision(player, decision.actions)) # Cast to FavorDecision
+        
+    def __repr__(self):
+        return repr(self.building)
 
 class Decision(object):
     def filter_actions(self):
@@ -156,6 +171,8 @@ class Building(object):
     def __init__(self, name, *actions):
         self.name = name
         self.actions = actions
+        self.worker = None
+        self.owner = None
         
     def activate(self, player):
         actions = [action for action in self.actions if action.can_execute(player)]
@@ -199,7 +216,7 @@ class MarketBuilding(Building):
         self.name = name
         self.amount = amount
         self.actions = [TradeAction({resource:1}, {'money':amount}) for resource in RESOURCES]
-        self.actions.append(NullAction())
+        self.actions.insert(0, NullAction())
     def __repr__(self):
         return 'R->%d' % self.amount
 
@@ -209,7 +226,7 @@ class PeddlerBuilding(Building):
         self.name = name
         self.amount = amount
         self.actions = [TradeAction({'money':amount}, {resource:1}) for resource in RESOURCES if resource != 'gold']
-        self.actions.append(NullAction())
+        self.actions.insert(0, NullAction())
     def __repr__(self):
         return '%d->R' % self.amount
     
@@ -223,7 +240,7 @@ class GuildBuilding(Building):
 class CarpenterBuilding(Building):
     def __init__(self, name, discount=False):
         self.name = name
-        self.actions = []
+        self.actions = [NullAction()]
         for building in wood_buildings:
             cost = building.cost.copy()
             if discount:
@@ -239,22 +256,18 @@ class CarpenterBuilding(Building):
                     self.actions.append(ConstructAction(building, new_cost))
             else:
                 self.actions.append(ConstructAction(building, cost))
-        if not discount:
-            self.actions.append(NullAction())
     def __repr__(self):
         return 'Carpenter'
     
 class MasonBuilding(Building):
     def __init__(self, name, discount=False):
         self.name = name
-        self.actions = []
+        self.actions = [NullAction()]
         for building in stone_buildings:
             cost = building.cost.copy()
             if discount:
                 del cost['stone']
             self.actions.append(ConstructAction(building, cost))
-        if not discount:
-            self.actions.append(NullAction())
     def __repr__(self):
         return 'Mason'
     
@@ -266,10 +279,9 @@ class LawyerBuilding(Building):
         buildings = [building for building in player.game.normal_buildings if \
                         (building.owner == None or building.owner == player) and not hasattr(building, 'fixed') \
                         and not isinstance(building, LawyerBuilding) and not isinstance(building, NullBuilding)]
-        self.actions = []
+        self.actions = [NullAction()]
         for building in buildings:
             self.actions.append(LawyerAction(building, discount=self.discount))
-        self.actions.append(NullAction())
         return Building.activate(self, player) # Let's still take advantage of the superclass filtering
     def __repr__(self):
         return 'Lawyer'
@@ -277,8 +289,8 @@ class LawyerBuilding(Building):
 class CastleBuilding(Building):
     def __init__(self):
         self.name = 'Castle'
-        self.actions = [CastleAction('wood', 'stone'), CastleAction('wood', 'cloth'), CastleAction('cloth', 'stone'),
-                        CastleAction('wood', 'gold'), CastleAction('stone', 'gold'), CastleAction('cloth', 'gold'), NullAction()]
+        self.actions = [NullAction(), CastleAction('wood', 'stone'), CastleAction('wood', 'cloth'), CastleAction('cloth', 'stone'),
+                        CastleAction('wood', 'gold'), CastleAction('stone', 'gold'), CastleAction('cloth', 'gold')]
 
     def __repr__(self):
         return 'Castle'
@@ -342,11 +354,11 @@ class StoneProductionBuilding(CompoundBuilding):
             ActionDecision(None, [ProduceAction(**{one:1}), ProduceAction(**{two:1})]))
         
     def deciding_player(self, i):
-        if i == 0:
+        if i == 0: # Worker gets the basic production
             return self.worker
-        if i == 1 and self.worker != self.owner:
+        if i == 1 and self.worker != self.owner: # Allow owner to pick their bonus resource
             return self.owner
-        return None
+        return None # Worker was = to owner, no bonus
     
     def __repr__(self):
         one, two = self.production.keys()
@@ -357,10 +369,10 @@ trading_post = Building("Trading Post", ProduceAction(money=3))
 merchant_guild = GuildBuilding("Merchant's Guild")
 joust_field = Building("Joust Field",JoustAction(), NullAction())
 
-stone_tailor = Building("Tailor", TradeAction({'cloth':2}, {'points':4}), TradeAction({'cloth':3},{'points':6}), NullAction()).constructable(6, stone=1, wood=1)
-stone_church = Building("Church", TradeAction({'money':2}, {'points':3}), TradeAction({'money':4},{'points':5}), NullAction()).constructable(3, stone=1, cloth=1).awards_favors(1)
-stone_bank = Building("Bank", TradeAction({'money':2}, {'gold':1}), TradeAction({'money':5},{'gold':2}), NullAction()).constructable(6, stone=1, wood=1)
-stone_jeweler = Building("Jeweler", TradeAction({'gold':1}, {'points':5}), TradeAction({'gold':2},{'points':9}), NullAction()).constructable(6, stone=1, cloth=1)
+stone_tailor = Building("Tailor", NullAction(), TradeAction({'cloth':2}, {'points':4}), TradeAction({'cloth':3},{'points':6})).constructable(6, stone=1, wood=1)
+stone_church = Building("Church", NullAction(), TradeAction({'money':2}, {'points':3}), TradeAction({'money':4},{'points':5})).constructable(3, stone=1, cloth=1).awards_favors(1)
+stone_bank = Building("Bank", NullAction(), TradeAction({'money':2}, {'gold':1}), TradeAction({'money':5},{'gold':2})).constructable(6, stone=1, wood=1)
+stone_jeweler = Building("Jeweler", NullAction(), TradeAction({'gold':1}, {'points':5}), TradeAction({'gold':2},{'points':9})).constructable(6, stone=1, cloth=1)
 stone_alchemist = StoneAlchemistBuilding().constructable(6, wood=1, stone=1)
 
 stone_farm = StoneProductionBuilding("Farm", {'food':2, 'cloth':1}).constructable(3, stone=1, food=1)

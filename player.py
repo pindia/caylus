@@ -14,6 +14,7 @@ class Player(object):
         self.resources['money'] = 5
         self.resources['points'] = 0
         self.favors = [-1,-1,-1,-1]
+        self.section_batches = [0,0,0]
         
     def has_resources(self, resources):
         for resource, amount in resources.items():
@@ -43,7 +44,7 @@ class Player(object):
     def get_points(self):
         return self.resources['points']
     def set_points(self, amt):
-        self.resources['points'] = amt    
+        self.resources['points'] = max(0, amt)
     points = property(get_points, set_points)
     
     @property

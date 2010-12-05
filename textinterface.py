@@ -42,14 +42,18 @@ class TextPlayer(Player):
             i = int(raw_input('Your decision:'))
             self.game.make_decision(decision, i)
         elif isinstance(decision, ActionDecision):
+            print 
             print '%s taking action' % (self.name)
             for i, action in enumerate(decision.actions):
                 print '%d: %s' % (i, action)
             i = int(raw_input('Your decision:'))
+            print
             self.game.make_decision(decision, i)
         elif isinstance(decision, FavorTrackDecision):
-            print '%s is awarded a royal favor' % self.name
+            print
+            print '%s selecting favor' % self.name
             for i in range(4):
                 print '%d: %s' % (i, track_names[i])
             i = int(raw_input('Your decision:'))
+            print
             self.game.make_decision(decision, i)
