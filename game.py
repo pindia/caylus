@@ -33,6 +33,7 @@ class Game(object):
             
         self.wood_buildings = wood_buildings
         self.stone_buildings = stone_buildings
+        self.prestige_buildings = prestige_buildings
         
         self.bailiff = INITIAL_BAILIFF
         self.provost = INITIAL_BAILIFF
@@ -45,6 +46,7 @@ class Game(object):
         self.castle_order = []
         self.castle_batches = []
         self.decision_stack = []
+        self.delayed_lawyer = []
         for player in self.players:
             player.passed = False
             player.workers = 6
@@ -57,10 +59,13 @@ class Game(object):
             self.begin_turn()
         if self.phase == PHASE_INCOME:
             for player in self.players:
-                player.money += 2
-            for building in self.normal_buildings:
-                if isinstance(building, ResidenceBuilding):
-                    building.owner.money += 1
+                income = 2
+                for building in self.normal_buildings:
+                    if isinstance(building, IncomeBuilding) and building.owner == player:
+                        income += building.income
+                player.money += income
+                self.log("%s receives income of %d", player, income)
+
             self.phase += 1 # No decisions in the income phase; proceed immediately
         if self.phase == PHASE_PLACE:
             if len([player for player in self.players if not player.passed]) == 0:
@@ -77,7 +82,7 @@ class Game(object):
                                        current_player.money >= self.placement_cost(building, current_player) and\
                                        current_player.workers > 0 and\
                                        (not isinstance(building, CastleBuilding) or current_player not in self.castle_order)\
-                                        and not isinstance(building, ResidenceBuilding)]
+                                        and not isinstance(building, IncomeBuilding)]
                 if not available_buildings:
                     self.make_decision(WorkerDecision(current_player, [None]), 0) # Automatically pass
                 else:
@@ -325,7 +330,7 @@ class Game(object):
         
 if __name__ == '__main__':
     game = Game(players=1, player_class=TextPlayer)
-    game.players[0].add_resources({'cloth':20, 'food':20, 'wood':20})
+    game.players[0].add_resources({'stone':20, 'food':20, 'cloth':20, 'gold':10})
     while game.section != SECTION_OVER:
         game.step_game()
         print game.players[0]
