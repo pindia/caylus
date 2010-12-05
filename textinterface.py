@@ -10,6 +10,17 @@ class TextPlayer(Player):
                 out += ' '
         return out
     
+    def get_decision(self, max):
+        while True:
+            text = raw_input('Your decision:')
+            try:
+                i = int(text)
+                if 0 <= i <= max:
+                    return 1
+            except:
+                pass
+                    
+    
     def make_decision(self, decision):
         if isinstance(decision, WorkerDecision):
             print '%s Placing worker.' % self.name
@@ -43,14 +54,14 @@ class TextPlayer(Player):
                 print '%3s%3s%3s%3s     %s' % (d,owner,worker,provost,building)
             #for i, building in enumerate(decision.buildings):
             #    print '%d: %s' % (i, building)
-            i = int(raw_input('Your decision:'))
+            i = self.get_decision(len(decision.buildings)-1)
             self.game.make_decision(decision, i)
         elif isinstance(decision, ActionDecision):
             print 
             print '%s taking action' % (self.name)
             for i, action in enumerate(decision.actions):
                 print '%d: %s' % (i, action)
-            i = int(raw_input('Your decision:'))
+            i = self.get_decision(len(decision.actions)-1)
             print
             self.game.make_decision(decision, i)
         elif isinstance(decision, FavorTrackDecision):
@@ -58,6 +69,6 @@ class TextPlayer(Player):
             print '%s selecting favor' % self.name
             for i, track in enumerate(decision.tracks):
                 print '%d: %s' % (i, get_track_name(track))
-            i = int(raw_input('Your decision:'))
+            i = self.get_decision(len(decision.tracks)-1)
             print
             self.game.make_decision(decision, i)

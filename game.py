@@ -9,6 +9,10 @@ class Game(object):
         self.players = []
         for i in range(self.num_players):
             player = player_class(self, COLORS[i])
+            if self.num_players > 2 and i >= 1:
+                player.money += 1
+            if i >= 3:
+                player.money += 1
             self.players.append(player)
         
         self.turn = -1
@@ -80,7 +84,7 @@ class Game(object):
                 while current_player.passed:
                     self.step += 1
                     current_player = self.players[self.step % self.num_players]
-                available_buildings = self.available_buildings(player)
+                available_buildings = self.available_buildings(current_player)
                 if not available_buildings:
                     self.make_decision(WorkerDecision(current_player, [None]), 0) # Automatically pass
                 else:
@@ -120,8 +124,16 @@ class Game(object):
         if self.phase == PHASE_SPECIAL:
             common_step_buildings(self.special_buildings)
         if self.phase == PHASE_PROVOST:
-            self.phase += 1
-            self.step = 0
+            if self.step == len(self.players):
+                self.phase += 1
+                self.step = 0
+            else:
+                player = self.players[self.step]
+                decision = bribe_provost.activate(player)
+                if len(decision.actions) == 1:
+                    self.make_decision(decision, 0)
+                else:
+                    player.make_decision(decision)
         if self.phase == PHASE_BUILDINGS:
             common_step_buildings([b for i, b in enumerate(self.normal_buildings) if i <= self.provost])
         if self.phase == PHASE_CASTLE:
@@ -223,8 +235,19 @@ class Game(object):
             for player in reversed(self.stables_order):
                 self.players.remove(player)
                 self.players.insert(0, player)
+            if len(self.players) == 2:
+                self.players.reverse()
             
             if self.section == SECTION_OVER:
+                for player in self.players:
+                    resources = 0
+                    for resource in RESOURCES:
+                        if resource != 'gold':
+                            resources += player.resources[resource]
+                    bonus = player.money // 4 + resources // 3 + player.resources['gold'] * 3
+                    self.log('%s gains %d end-of-game points', player, bonus)
+                    player.points += bonus
+                self.phase = -1
                 return
             self.begin_turn()
         
@@ -247,7 +270,8 @@ class Game(object):
                 actions = [] # Collect together all the actions
                 for building in track[:player.favors[abs_index]+1]:
                     #actions.extend(building.activate(player).actions)
-                    actions.append(FavorAction(building))
+                    if building.can_activate(player):
+                        actions.append(FavorAction(building))
             else:
                 actions = track[player.favors[abs_index]].activate(player).actions
             decision = FavorDecision(player, actions)
@@ -287,6 +311,14 @@ class Game(object):
                         building.owner.points += 1
                 player.money -= self.placement_cost(building, player)
                 player.workers -= 1
+            self.step += 1
+            self.step_game()
+        elif self.phase == PHASE_PROVOST:
+            player = decision.player
+            action = decision.actions[i]
+            if hasattr(action, 'spaces'):
+                self.log('%s moves the provost %d spaces', player, action.spaces)
+            action.execute(player)
             self.step += 1
             self.step_game()
         elif self.phase in [PHASE_SPECIAL, PHASE_BUILDINGS]:
@@ -345,7 +377,8 @@ class Game(object):
                                        not isinstance(building, NullBuilding) and \
                                        (not cost or player.money >= self.placement_cost(building, player)) and\
                                        (not cost or player.workers > 0) and\
-                                       (not isinstance(building, CastleBuilding) or player not in self.castle_order)\
+                                       (not isinstance(building, CastleBuilding) or player not in self.castle_order)and\
+                                       (not isinstance(building, StablesBuilding) or (player not in self.stables_order and len(self.stables_order) < 3)) \
                                         and not isinstance(building, IncomeBuilding)]
             
     def placement_cost(self, building, player):
@@ -367,12 +400,10 @@ class Game(object):
             print '[Log]' + message % ((player.name,) + args)
         
 if __name__ == '__main__':
-    game = Game(players=3, player_class=TextPlayer)
-    game.players[0].add_resources({'stone':20, 'food':20, 'cloth':20, 'gold':10})
+    game = Game(players=2, player_class=TextPlayer)
+
     while game.section != SECTION_OVER:
         game.step_game()
-        print game.players[0]
-        print game.phase, game.step
     print 'GAME OVER'
     for player in game.players:
         print '%s: %d' % (player.name, player.points)

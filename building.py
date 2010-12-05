@@ -30,6 +30,21 @@ class MoveProvostAction(Action):
         
     def __repr__(self):
         return 'P%+d' % self.spaces
+    
+class BribeProvostAction(Action):
+    def __init__(self, spaces):
+        self.spaces = spaces
+        
+    def can_execute(self, player):
+        return 0 < player.game.provost + self.spaces < LAST_SPACE and player.money >= abs(self.spaces)
+        
+    def execute(self, player):
+        player.game.provost += self.spaces
+        player.money -= abs(self.spaces)
+        
+        
+    def __repr__(self):
+        return '%d->P%+d' % (abs(self.spaces), self.spaces)
        
 class ProduceAction(Action):
     def __init__(self, **output):
@@ -184,6 +199,8 @@ class GateAction(Action):
         if isinstance(self.target, CastleBuilding):
             player.game.castle_order.append(player)
             player.game.castle_batches.append(0)
+        elif isinstance(self.target, StablesBuilding):
+            player.game.stables_order.append(player)
         else:
             self.target.worker = player
         
@@ -253,6 +270,9 @@ class Building(object):
         #    actions[0].execute(player)
         #else:
         #    print actions
+        
+    def can_activate(self, player):
+        return True
         
     def constructable(self, points, **cost):
         self.cost = cost
@@ -418,6 +438,11 @@ class StablesBuilding(Building):
     def __repr__(self):
         return 'Stables'
    
+class BribeProvostBuilding(Building):
+    def __init__(self):
+        self.actions = [NullAction()]
+        self.actions += [BribeProvostAction(spaces) for spaces in [-3,-2,-1,1,2,3]]
+   
 class CastleBuilding(Building):
     def __init__(self):
         self.name = 'Castle'
@@ -495,6 +520,28 @@ class StoneProductionBuilding(CompoundBuilding):
     def __repr__(self):
         one, two = self.production.keys()
         return format_resources(self.production) + ' (%s/%s)' % (one[0].upper(), two[0].upper())
+        
+class ResourceTrackTwoForOneBuilding(CompoundBuilding):
+    def __init__(self):
+        lose_one = ActionDecision(None, [TradeAction({resource:1},{}) for resource in RESOURCES])
+        gain_one = ActionDecision(None, [ProduceAction(**{resource:1}) for resource in RESOURCES if resource != 'gold'])
+        CompoundBuilding.__init__(self, None, lose_one, gain_one, gain_one)
+        
+    def can_activate(self, player):
+        for resource in RESOURCES:
+            if player.resources[resource] > 0:
+                return True
+        return False
+    
+    def activate(self, player):
+        self.player = player
+        return CompoundBuilding.activate(self, player)
+    
+    def deciding_player(self, player):
+        return self.player
+        
+    def __repr__(self):
+        return 'RR->R'
 
 castle = CastleBuilding()
 gate = GateBuilding("Gate")
@@ -503,6 +550,8 @@ merchant_guild = GuildBuilding("Merchant's Guild")
 joust_field = Building("Joust Field",NullAction(), JoustAction())
 inn = InnBuilding()
 stables = StablesBuilding()
+
+bribe_provost = BribeProvostBuilding()
 
 prestige_statue = PrestigeBuilding("Statue").constructable(7, stone=2, gold=1).awards_favors(1)
 prestige_granary = PrestigeBuilding("Granary").constructable(10, food=3, gold=1)
@@ -567,10 +616,13 @@ fixed_buildings = [fixed_peddler, fixed_carpenter]
 
 null_building = NullBuilding("Null")
 
+
+
+
 point_track = [Building(None, ProduceAction(points=p)) for p in range(1, 6)]
 money_track = [Building(None, ProduceAction(money=m)) for m in range(3, 8)]
 resource_track = [Building(None, ProduceAction(food=1)), Building(None, ProduceAction(wood=1), ProduceAction(stone=1)),
-                Building(None, ProduceAction(cloth=1)), Building(None, ProduceAction(wood=1, stone=1, cloth=1)), Building(None, ProduceAction(gold=1))]
+                  Building(None, ProduceAction(cloth=1)),ResourceTrackTwoForOneBuilding(),Building(None, ProduceAction(gold=1))]
 building_track = [Building(None, NullAction()), CarpenterBuilding(None, discount=True), MasonBuilding(None, discount=True), LawyerBuilding(None, discount=True), ArchitectBuilding(None)]
 
 favor_tracks = [point_track, money_track, resource_track, building_track]
