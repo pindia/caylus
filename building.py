@@ -176,6 +176,28 @@ class FavorAction(Action):
     def __repr__(self):
         return repr(self.building)
 
+class GateAction(Action):
+    def __init__(self, target):
+        self.target = target
+        
+    def execute(self, player):
+        if isinstance(self.target, CastleBuilding):
+            player.game.castle_order.append(player)
+            player.game.castle_batches.append(0)
+        else:
+            self.target.worker = player
+        
+    def __repr__(self):
+        return 'Worker->[%s]' % self.target
+    
+class RemoveWorkerFromInnAction(Action):
+    def execute(self, player):
+        player.game.inn_player = None
+        player.game.log("%s removes their worker from the inn", player)
+        
+    def __repr__(self):
+        return 'Remove worker from inn'
+
 class Decision(object):
     def filter_actions(self):
         pass
@@ -371,6 +393,30 @@ class ArchitectBuilding(Building):
         
     def __repr__(self):
         return 'Architect'
+    
+class GateBuilding(Building):
+    
+    def activate(self, player):
+        available_buildings = player.game.available_buildings(player, cost=False)
+        self.actions = [GateAction(building) for building in available_buildings]
+        return Building.activate(self, player)
+            
+    
+    def __repr__(self):
+        return 'Gate'
+    
+class InnBuilding(Building):
+    
+    def __init__(self):
+        self.name = 'Inn'
+    def __repr__(self):
+        return 'Inn'
+        
+class StablesBuilding(Building):
+    def __init__(self):
+        self.name = 'Stables'
+    def __repr__(self):
+        return 'Stables'
    
 class CastleBuilding(Building):
     def __init__(self):
@@ -450,10 +496,13 @@ class StoneProductionBuilding(CompoundBuilding):
         one, two = self.production.keys()
         return format_resources(self.production) + ' (%s/%s)' % (one[0].upper(), two[0].upper())
 
-castle = CastleBuilding()   
+castle = CastleBuilding()
+gate = GateBuilding("Gate")
 trading_post = Building("Trading Post", ProduceAction(money=3))
 merchant_guild = GuildBuilding("Merchant's Guild")
 joust_field = Building("Joust Field",NullAction(), JoustAction())
+inn = InnBuilding()
+stables = StablesBuilding()
 
 prestige_statue = PrestigeBuilding("Statue").constructable(7, stone=2, gold=1).awards_favors(1)
 prestige_granary = PrestigeBuilding("Granary").constructable(10, food=3, gold=1)
@@ -512,7 +561,7 @@ fixed_gold.fixed = True
 
 
 
-special_buildings = [castle, trading_post, merchant_guild, joust_field]
+special_buildings = [castle, gate, trading_post, merchant_guild, joust_field, stables, inn]
 neutral_buildings = [neutral_carpenter, neutral_farm, neutral_forest, neutral_sawmill, neutral_quarry, neutral_market]
 fixed_buildings = [fixed_peddler, fixed_carpenter]
 

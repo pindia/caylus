@@ -31,9 +31,13 @@ class TextPlayer(Player):
                     i += 1
                     
                 owner = '-' if not building.owner else building.owner.initial
+                if isinstance(building, InnBuilding):
+                    owner = '-' if not self.game.inn_player else self.game.inn_player.initial
                 worker = '-' if not building.worker else building.worker.initial
                 if building == castle:
                     worker = ''.join([p.initial for p in self.game.castle_order])
+                if building == stables:
+                    worker = ''.join([p.initial for p in self.game.stables_order])
                 provost = 'O' if j == self.game.provost else ' '
                     
                 print '%3s%3s%3s%3s     %s' % (d,owner,worker,provost,building)

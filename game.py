@@ -15,9 +15,12 @@ class Game(object):
         self.section = SECTION_DUNGEON
         self.new_section = SECTION_DUNGEON
         self.spaces = SECTION_SPACES[:]
+        self.inn_player = None
 
         
         self.special_buildings = special_buildings
+        if players < 3:
+            self.special_buildings.remove(stables)
         self.normal_buildings = []
         
         random.shuffle(neutral_buildings)
@@ -43,13 +46,14 @@ class Game(object):
         self.phase = 0
         self.step = 0
         self.pass_order = []
+        self.stables_order = []
         self.castle_order = []
         self.castle_batches = []
         self.decision_stack = []
         self.delayed_lawyer = []
         for player in self.players:
             player.passed = False
-            player.workers = 6
+            player.workers = 5 if self.inn_player == player else 6
         self.buildings = self.special_buildings + self.normal_buildings
         for building in self.buildings:
             building.worker = None
@@ -76,13 +80,7 @@ class Game(object):
                 while current_player.passed:
                     self.step += 1
                     current_player = self.players[self.step % self.num_players]
-                available_buildings = [building for building in self.buildings \
-                                       if building.worker is None and \
-                                       not isinstance(building, NullBuilding) and \
-                                       current_player.money >= self.placement_cost(building, current_player) and\
-                                       current_player.workers > 0 and\
-                                       (not isinstance(building, CastleBuilding) or current_player not in self.castle_order)\
-                                        and not isinstance(building, IncomeBuilding)]
+                available_buildings = self.available_buildings(player)
                 if not available_buildings:
                     self.make_decision(WorkerDecision(current_player, [None]), 0) # Automatically pass
                 else:
@@ -93,17 +91,32 @@ class Game(object):
                 self.step = 0
             else:
                 building = buildings[self.step]
-                if not building.worker:
-                    self.step += 1
-                    self.step_game()
-                else:
-                    decision = building.activate(building.worker)
-                    if len(decision.actions) == 0:
+                if isinstance(building, InnBuilding):
+                    if building.worker:
+                        self.inn_player = building.worker
+                        self.log("%s is the new inn owner", self.inn_player)
+                        self.step += 1
                         self.step_game()
-                    elif len(decision.actions) == 1:
-                        self.make_decision(decision, 0)
+                    elif self.inn_player:
+                        decision = ActionDecision(self.inn_player, [NullAction(), RemoveWorkerFromInnAction()])
+                        self.inn_player.make_decision(decision)
                     else:
-                        building.worker.make_decision(decision)
+                        self.step += 1
+                        self.step_game() 
+                elif isinstance(building, int):
+                    pass
+                else:
+                    if not building.worker:
+                        self.step += 1
+                        self.step_game()
+                    else:
+                        decision = building.activate(building.worker)
+                        if len(decision.actions) == 0:
+                            self.step_game()
+                        elif len(decision.actions) == 1:
+                            self.make_decision(decision, 0)
+                        else:
+                            building.worker.make_decision(decision)
         if self.phase == PHASE_SPECIAL:
             common_step_buildings(self.special_buildings)
         if self.phase == PHASE_PROVOST:
@@ -200,10 +213,17 @@ class Game(object):
                 else:
                     self.phase += 1 # Scoring happened but no favors, continue
         if self.phase == PHASE_END:
+            # Update section
             self.section = self.new_section
+            # Perform delayed transformations
             for i, residence in self.delayed_lawyer:
-                self.normal_buildings[i] = residence # Perform delayed transformations
+                self.normal_buildings[i] = residence 
             self.delayed_lawyer = []
+            # Activate stables
+            for player in reversed(self.stables_order):
+                self.players.remove(player)
+                self.players.insert(0, player)
+            
             if self.section == SECTION_OVER:
                 return
             self.begin_turn()
@@ -258,6 +278,8 @@ class Game(object):
                 if isinstance(building, CastleBuilding):
                     self.castle_order.append(player)
                     self.castle_batches.append(0)
+                elif isinstance(building, StablesBuilding):
+                    self.stables_order.append(player)
                 else:
                     building.worker = player
                     if building.owner and building.owner != player:
@@ -315,11 +337,24 @@ class Game(object):
         decision = FavorTrackDecision(player)
         player.make_decision(decision)
             
+    def available_buildings(self, player, cost=True):
+        ''' Buildings that can have workers placed on them by a certain player.
+            cost is whether or not to take into account placement cost. '''
+        return [building for building in self.buildings \
+                                       if building.worker is None and \
+                                       not isinstance(building, NullBuilding) and \
+                                       (not cost or player.money >= self.placement_cost(building, player)) and\
+                                       (not cost or player.workers > 0) and\
+                                       (not isinstance(building, CastleBuilding) or player not in self.castle_order)\
+                                        and not isinstance(building, IncomeBuilding)]
+            
     def placement_cost(self, building, player):
         '''Amount it will cost for a player to take a building'''
         if not self.pass_order:
             return 1
         if building.owner == player:
+            return 1
+        if self.inn_player == player:
             return 1
         if self.num_players == 2 and self.pass_order:
             return 3
@@ -332,7 +367,7 @@ class Game(object):
             print '[Log]' + message % ((player.name,) + args)
         
 if __name__ == '__main__':
-    game = Game(players=1, player_class=TextPlayer)
+    game = Game(players=3, player_class=TextPlayer)
     game.players[0].add_resources({'stone':20, 'food':20, 'cloth':20, 'gold':10})
     while game.section != SECTION_OVER:
         game.step_game()
