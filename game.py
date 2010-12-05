@@ -201,6 +201,9 @@ class Game(object):
                     self.phase += 1 # Scoring happened but no favors, continue
         if self.phase == PHASE_END:
             self.section = self.new_section
+            for i, residence in self.delayed_lawyer:
+                self.normal_buildings[i] = residence # Perform delayed transformations
+            self.delayed_lawyer = []
             if self.section == SECTION_OVER:
                 return
             self.begin_turn()

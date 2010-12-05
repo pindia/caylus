@@ -115,11 +115,19 @@ class LawyerAction(TradeAction):
         else:
             TradeAction.__init__(self, input={'cloth':1, 'money':1}, output={})
         
+    def can_execute(self, player):
+        for i, residence in player.game.delayed_lawyer:
+            if i == player.game.normal_buildings.index(self.target):
+                return False # Someone has already transformed our target building
+        return TradeAction.can_execute(self, player) 
+        
     def execute(self, player):
         player.remove_resources(self.input)
         i = player.game.normal_buildings.index(self.target)
         residence = ResidenceBuilding()
-        player.game.normal_buildings[i] = residence
+        # Always delay the action just in case
+        player.game.delayed_lawyer.append([i, residence])
+        #player.game.normal_buildings[i] = residence
         residence.owner = player
         player.points += 2
         player.game.log('%s gains 2 points from residence construction', player)
@@ -506,7 +514,7 @@ fixed_gold.fixed = True
 
 special_buildings = [castle, trading_post, merchant_guild, joust_field]
 neutral_buildings = [neutral_carpenter, neutral_farm, neutral_forest, neutral_sawmill, neutral_quarry, neutral_market]
-fixed_buildings = [fixed_peddler, fixed_carpenter, wood_lawyer, stone_architect1]
+fixed_buildings = [fixed_peddler, fixed_carpenter]
 
 null_building = NullBuilding("Null")
 
