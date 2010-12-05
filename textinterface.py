@@ -18,8 +18,13 @@ class TextPlayer(Player):
             print '  0              Pass'
             print
             i = 1
-            provost_building = self.game.normal_buildings[self.game.provost]
+            j = -1
+            first_normal_building = self.game.normal_buildings[0]
             for building in self.game.buildings :
+                if j != -1:
+                    j += 1
+                if building == first_normal_building:
+                    j = 0
                 d = '   '
                 if building in decision.buildings:
                     d = i
@@ -29,7 +34,7 @@ class TextPlayer(Player):
                 worker = '-' if not building.worker else building.worker.initial
                 if building == castle:
                     worker = ''.join([p.initial for p in self.game.castle_order])
-                provost = 'O' if building == provost_building else ' '
+                provost = 'O' if j == self.game.provost else ' '
                     
                 print '%3s%3s%3s%3s     %s' % (d,owner,worker,provost,building)
             #for i, building in enumerate(decision.buildings):

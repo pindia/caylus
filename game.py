@@ -28,6 +28,7 @@ class Game(object):
             building.owner = None
             
         self.wood_buildings = wood_buildings
+        self.stone_buildings = stone_buildings
         
         self.bailiff = INITIAL_BAILIFF
         self.provost = INITIAL_BAILIFF
@@ -52,6 +53,9 @@ class Game(object):
         if self.phase == PHASE_INCOME:
             for player in self.players:
                 player.money += 2
+            for building in self.normal_buildings:
+                if isinstance(building, ResidenceBuilding):
+                    building.owner.money += 1
             self.phase += 1 # No decisions in the income phase; proceed immediately
         if self.phase == PHASE_PLACE:
             if len([player for player in self.players if not player.passed]) == 0:
@@ -65,9 +69,10 @@ class Game(object):
                 available_buildings = [building for building in self.buildings \
                                        if building.worker is None and \
                                        not isinstance(building, NullBuilding) and \
-                                       player.money >= self.placement_cost(building, player) and\
-                                       player.workers > 0 and\
-                                       (not isinstance(building, CastleBuilding) or player not in self.castle_order)]
+                                       current_player.money >= self.placement_cost(building, current_player) and\
+                                       current_player.workers > 0 and\
+                                       (not isinstance(building, CastleBuilding) or current_player not in self.castle_order)\
+                                        and not isinstance(building, ResidenceBuilding)]
                 if not available_buildings:
                     self.make_decision(WorkerDecision([None]), 0) # Automatically pass
                 else:
@@ -165,6 +170,8 @@ class Game(object):
                     self.castle_batches.append(0)
                 else:
                     building.worker = player
+                    if building.owner and building.owner != player:
+                        building.owner.points += 1
                 player.money -= self.placement_cost(building, player)
                 player.workers -= 1
             self.step += 1
@@ -173,8 +180,9 @@ class Game(object):
             player = self.special_buildings[self.step].worker
             action = decision.actions[i]
             action.execute(player)
-            self.step += 1
-            self.step_game()
+            if not action.is_blocking():
+                self.step += 1
+                self.step_game()
         elif self.phase == PHASE_BUILDINGS:
             player = self.normal_buildings[self.step].worker
             action = decision.actions[i]
