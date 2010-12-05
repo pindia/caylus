@@ -123,20 +123,25 @@ class LawyerAction(TradeAction):
         residence = ResidenceBuilding()
         player.game.normal_buildings[i] = residence
         residence.owner = player
+        player.points += 2
         
     def __repr__(self):
         return '[%s]->Residence' % self.target
 
 class Decision(object):
+    def filter_actions(self):
+        self.actions = [action for action in self.actions if action.can_execute(self.player)]
     pass
 
 class ActionDecision(Decision):
     ''' A decision is a choice between a number of actions '''
-    def __init__(self, actions):
+    def __init__(self, player, actions):
+        self.player = player
         self.actions = actions
         
 class WorkerDecision(Decision):
-    def __init__(self, buildings):
+    def __init__(self, player, buildings):
+        self.player = player
         self.buildings = buildings
         self.buildings = [None] + self.buildings
         
@@ -157,7 +162,7 @@ class Building(object):
         
     def activate(self, player):
         actions = [action for action in self.actions if action.can_execute(player)]
-        return ActionDecision(actions)
+        return ActionDecision(player, actions)
         #if len(actions) == 0:
         #    return
         #elif len(actions) == 1:
@@ -176,7 +181,7 @@ class Building(object):
     
 class NullBuilding(Building):
     def activate(self, player):
-        return ActionDecision(NullAction())
+        return ActionDecision(player, NullAction())
     def __eq__(self, other):
         return isinstance(other, NullBuilding)
         
@@ -277,7 +282,74 @@ class CastleBuilding(Building):
     def __repr__(self):
         return 'Castle'
     
-     
+class CompoundBuilding(Building):
+    ''' A compound building allows the player, or possibly different players, to make multiple decisions.
+        Forms the basis of stone farms and other complex buildings '''
+    def __init__(self, name, *decisions):
+        self.name = name
+        self.decisions = decisions
+        
+    def activate(self, player):
+        first = self.decisions[0]
+        last = self.decisions[-1]
+        for i, decision in enumerate(self.decisions):
+            decision.player = self.deciding_player(i)
+            decision.filter_actions()
+        for decision in reversed(self.decisions):
+            if decision != first and decision.player != None:
+                player.game.decision_stack.append(decision)
+        return first
+        
+    def deciding_player(self, i):
+        ''' Who will make the ith decision for this building?'''
+        return self.worker
+    
+    def __repr__(self):
+        return '(Undefined)'
+    
+class WoodPeddlerBuilding(CompoundBuilding):
+    def __init__(self):
+        actions = [TradeAction({'money':1}, {resource:1}) for resource in RESOURCES if resource != 'gold']
+        CompoundBuilding.__init__(self, 'Peddler', ActionDecision(None, actions), ActionDecision(None, actions))
+    def __repr__(self):
+        return '1->R/2->RR'
+    
+class StoneAlchemistBuilding(CompoundBuilding):
+    def __init__(self):
+        actions = []
+        for one in RESOURCES:
+            for two in RESOURCES:
+                if one == 'gold' or two == 'gold':
+                    continue
+                cost = {}
+                cost[one] = 1
+                cost[two] = cost.get(two, 0) + 1
+                actions.append(TradeAction(cost, {'gold':1}))
+        actions.append(NullAction())
+        CompoundBuilding.__init__(self, 'Alchemist', ActionDecision(None, actions), ActionDecision(None, actions))
+    def __repr__(self):
+        return 'RR->G/RRRR->GG'
+    
+class StoneProductionBuilding(CompoundBuilding):
+    ''' A stone farm, in addition to providing resource to its worker, may provide a choice
+    of resources to the owner if different from the worker'''
+    def __init__(self, name, production):
+        self.production = production
+        one, two = production.keys()
+        CompoundBuilding.__init__( self, name, \
+            ActionDecision(None, [ProduceAction(**production)]), \
+            ActionDecision(None, [ProduceAction(**{one:1}), ProduceAction(**{two:1})]))
+        
+    def deciding_player(self, i):
+        if i == 0:
+            return self.worker
+        if i == 1 and self.worker != self.owner:
+            return self.owner
+        return None
+    
+    def __repr__(self):
+        one, two = self.production.keys()
+        return format_resources(self.production) + ' (%s/%s)' % (one[0].upper(), two[0].upper())
 
 castle = CastleBuilding()   
 trading_post = Building("Trading Post", ProduceAction(money=3))
@@ -285,14 +357,23 @@ merchant_guild = GuildBuilding("Merchant's Guild")
 joust_field = Building("Joust Field",JoustAction(), NullAction())
 
 stone_tailor = Building("Tailor", TradeAction({'cloth':2}, {'points':4}), TradeAction({'cloth':3},{'points':6}), NullAction()).constructable(6, stone=1, wood=1)
-stone_buildings = [stone_tailor]
+stone_church = Building("Church", TradeAction({'money':2}, {'points':3}), TradeAction({'money':4},{'points':5}), NullAction()).constructable(6, stone=1, cloth=1)
+stone_bank = Building("Bank", TradeAction({'money':2}, {'gold':1}), TradeAction({'money':5},{'gold':2}), NullAction()).constructable(6, stone=1, wood=1)
+stone_jeweler = Building("Jeweler", TradeAction({'gold':1}, {'points':5}), TradeAction({'gold':2},{'points':9}), NullAction()).constructable(6, stone=1, cloth=1)
+stone_alchemist = StoneAlchemistBuilding().constructable(6, wood=1, stone=1)
+
+stone_farm = StoneProductionBuilding("Farm", {'food':2, 'cloth':1}).constructable(3, stone=1, food=1)
+stone_park = StoneProductionBuilding("Park", {'wood':2, 'food':1}).constructable(3, stone=1, food=1)
+stone_workshop = StoneProductionBuilding("Workshop", {'stone':2, 'cloth':1}).constructable(3, stone=1, food=1)
+
+stone_buildings = [stone_church, stone_bank, stone_jeweler, stone_tailor, stone_alchemist, stone_farm, stone_park, stone_workshop]
 
 wood_farm_food = Building("Farm",ProduceAction(food=2), ProduceAction(cloth=1)).constructable(2, wood=1, food=1)
 wood_farm_cloth = Building("Farm",ProduceAction(cloth=2), ProduceAction(food=1)).constructable(2, wood=1, food=1)
 wood_quarry = Building("Quarry", ProduceAction(stone=2)).constructable(2, wood=1, food=1)
 wood_sawmill = Building("Sawmill", ProduceAction(wood=2)).constructable(2, wood=1, food=1)
 wood_market = MarketBuilding("Market", 6).constructable(2, wood=1, any=1)
-wood_peddler = PeddlerBuilding("Peddler", 1).constructable(2, wood=1, any=1)
+wood_peddler = WoodPeddlerBuilding().constructable(2, wood=1, any=1)
 wood_mason = MasonBuilding("Mason").constructable(4, wood=1, food=1)
 wood_lawyer = LawyerBuilding("Lawyer").constructable(4, wood=1, cloth=1)
 

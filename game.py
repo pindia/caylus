@@ -23,6 +23,7 @@ class Game(object):
         self.normal_buildings += [NullBuilding("Null")] * 7
         self.normal_buildings += [fixed_gold]
         
+        
         self.buildings = self.special_buildings + self.normal_buildings
         for building in self.buildings:
             building.owner = None
@@ -40,6 +41,7 @@ class Game(object):
         self.pass_order = []
         self.castle_order = []
         self.castle_batches = []
+        self.decision_stack = []
         for player in self.players:
             player.passed = False
             player.workers = 6
@@ -74,9 +76,9 @@ class Game(object):
                                        (not isinstance(building, CastleBuilding) or current_player not in self.castle_order)\
                                         and not isinstance(building, ResidenceBuilding)]
                 if not available_buildings:
-                    self.make_decision(WorkerDecision([None]), 0) # Automatically pass
+                    self.make_decision(WorkerDecision(current_player, [None]), 0) # Automatically pass
                 else:
-                    current_player.make_decision(WorkerDecision(available_buildings))
+                    current_player.make_decision(WorkerDecision(current_player, available_buildings))
         def common_step_buildings(buildings):
             if self.step == len(buildings):
                 self.phase += 1
@@ -157,7 +159,7 @@ class Game(object):
             self.step_game()
             return
         if self.phase == PHASE_PLACE:
-            player = self.players[self.step % self.num_players]
+            player = decision.player
             building = decision.buildings[i]
             if building is None:
                 if not self.pass_order:
@@ -177,18 +179,30 @@ class Game(object):
             self.step += 1
             self.step_game()
         elif self.phase == PHASE_SPECIAL:
-            player = self.special_buildings[self.step].worker
+            player = decision.player
             action = decision.actions[i]
             action.execute(player)
             if not action.is_blocking():
                 self.step += 1
                 self.step_game()
+            #elif self.decision_stack:
+            #    decision = self.decision_stack.pop()
+            #    decision.player.make_decision(decision)
         elif self.phase == PHASE_BUILDINGS:
-            player = self.normal_buildings[self.step].worker
+            player = decision.player
             action = decision.actions[i]
             action.execute(player)
-            self.step += 1
-            self.step_game()
+            print 'Executed'
+            if self.decision_stack:
+                decision = self.decision_stack.pop()
+                decision.filter_actions()
+                if len(decision.actions) > 1:
+                    decision.player.make_decision(decision)
+                else:
+                    self.make_decision(decision, 0)
+            else:
+                self.step += 1 # We're done with this building
+                self.step_game()
         elif self.phase == PHASE_CASTLE:
             player = self.castle_order[self.step]
             action = decision.actions[i]
