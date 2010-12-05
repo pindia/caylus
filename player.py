@@ -13,6 +13,7 @@ class Player(object):
         self.resources['wood'] = 1
         self.resources['money'] = 5
         self.resources['points'] = 0
+        self.favors = [-1,-1,-1,-1]
         
     def has_resources(self, resources):
         for resource, amount in resources.items():

@@ -109,9 +109,16 @@ class ActionDecision(Decision):
 class WorkerDecision(Decision):
     def __init__(self, buildings):
         self.buildings = buildings
-        self.buildings = [None] + self.buildings 
+        self.buildings = [None] + self.buildings
+        
+class FavorTrackDecision(Decision):
+    def __init__(self, player):
+        self.player = player
 
-
+class FavorDecision(ActionDecision):
+    def __init__(self, player, actions):
+        self.player = player
+        self.actions = actions
 
 class Building(object):
     ''' A simple building has a static list of actions the player may choose from '''
@@ -235,6 +242,15 @@ neutral_buildings = [neutral_carpenter, neutral_farm, neutral_forest, neutral_sa
 fixed_buildings = [fixed_peddler, fixed_carpenter]
 
 null_building = NullBuilding("Null")
+
+point_track = [Building(None, ProduceAction(points=p)) for p in range(1, 6)]
+money_track = [Building(None, ProduceAction(money=m)) for m in range(3, 8)]
+resource_track = [Building(None, ProduceAction(food=1)), Building(None, ProduceAction(wood=1), ProduceAction(stone=1)),
+                Building(None, ProduceAction(cloth=1)), Building(None, ProduceAction(wood=1, stone=1, cloth=1)), Building(None, ProduceAction(gold=1))]
+building_track = [Building(None, NullAction()), neutral_carpenter]
+
+favor_tracks = [point_track, money_track, resource_track, building_track]
+track_names = ['Points', 'Money', 'Resource', 'Building']
 
 if __name__ == '__main__':
     from player import *

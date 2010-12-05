@@ -11,7 +11,7 @@ def format_resources(resources):
     out.sort()
     return ''.join(out)
     
-PHASES = range(7)
+PHASES = range(8)
     
 PHASE_INCOME = 0
 PHASE_PLACE = 1
@@ -19,7 +19,8 @@ PHASE_SPECIAL = 2
 PHASE_PROVOST = 3
 PHASE_BUILDINGS = 4
 PHASE_CASTLE = 5
-PHASE_END = 6
+PHASE_CASTLE_FAVOR = 6
+PHASE_END = 7
 
 INITIAL_BAILIFF = 5
 SCORE_DUNGEON = 11

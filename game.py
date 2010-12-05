@@ -31,7 +31,6 @@ class Game(object):
         
         self.bailiff = INITIAL_BAILIFF
         self.provost = INITIAL_BAILIFF
-
         
     def begin_turn(self):
         self.turn += 1
@@ -108,6 +107,19 @@ class Game(object):
                     self.make_decision(decision, 0)
                 else:
                     player.make_decision(decision)
+        if self.phase == PHASE_CASTLE_FAVOR:
+            if self.step == 1:
+                self.phase += 1
+                self.step = 0
+            else:
+                if not self.castle_batches:
+                    self.phase += 1
+                    #self.step_game()
+                else:
+                    largest = max(self.castle_batches)
+                    if largest != 0:
+                        i = self.castle_batches.index(largest)
+                        self.award_favor(self.castle_order[i])
         if self.phase == PHASE_END:
             self.bailiff += 2 if self.provost > self.bailiff else 1
             self.provost = self.bailiff
@@ -116,6 +128,29 @@ class Game(object):
             
         
     def make_decision(self, decision, i):
+        if isinstance(decision, FavorTrackDecision):
+            track = favor_tracks[i]
+            player = decision.player
+            player.favors[i] += 1
+            if i > 1: # VP and money tracks have no point to selecting lower cells
+                actions = [] # Collect together all the actions
+                for building in track[:player.favors[i]+1]:
+                    actions.extend(building.activate(player).actions)
+            else:
+                actions = track[player.favors[i]].activate(player).actions
+            decision = FavorDecision(player, actions)
+            if len(decision.actions) == 1:
+                self.make_decision(decision, 0)
+            else:
+                player.make_decision(decision)
+            return
+        if isinstance(decision, FavorDecision):
+            player = decision.player
+            action = decision.actions[i]
+            action.execute(player)
+            self.step += 1
+            self.step_game()
+            return
         if self.phase == PHASE_PLACE:
             player = self.players[self.step % self.num_players]
             building = decision.buildings[i]
@@ -157,6 +192,10 @@ class Game(object):
                 player.points += 5
             self.step_game()
             
+    def award_favor(self, player):
+        decision = FavorTrackDecision(player)
+        player.make_decision(decision)
+            
     def placement_cost(self, building, player):
         '''Amount it will cost for a player to take a building'''
         if not self.pass_order:
@@ -168,7 +207,7 @@ class Game(object):
         return len(self.pass_order) + 1
         
 if __name__ == '__main__':
-    game = Game(players=2, player_class=TextPlayer)
+    game = Game(players=1, player_class=TextPlayer)
     while True:
         game.step_game()
         print game.players[0]

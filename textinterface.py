@@ -24,10 +24,14 @@ class TextPlayer(Player):
                 if building in decision.buildings:
                     d = i
                     i += 1
-                print '%3s%3s%3s%3s     %s' % (d,
-                                               '-' if not building.owner else building.owner.initial,
-                                               '-' if not building.worker else building.worker.initial,
-                                               'O' if building == provost_building else ' ', building)
+                    
+                owner = '-' if not building.owner else building.owner.initial
+                worker = '-' if not building.worker else building.worker.initial
+                if building == castle:
+                    worker = ''.join([p.initial for p in self.game.castle_order])
+                provost = 'O' if building == provost_building else ' '
+                    
+                print '%3s%3s%3s%3s     %s' % (d,owner,worker,provost,building)
             #for i, building in enumerate(decision.buildings):
             #    print '%d: %s' % (i, building)
             i = int(raw_input('Your decision:'))
@@ -36,5 +40,11 @@ class TextPlayer(Player):
             print '%s taking action' % (self.name)
             for i, action in enumerate(decision.actions):
                 print '%d: %s' % (i, action)
+            i = int(raw_input('Your decision:'))
+            self.game.make_decision(decision, i)
+        elif isinstance(decision, FavorTrackDecision):
+            print '%s is awarded a royal favor' % self.name
+            for i in range(4):
+                print '%d: %s' % (i, track_names[i])
             i = int(raw_input('Your decision:'))
             self.game.make_decision(decision, i)
