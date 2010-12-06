@@ -16,7 +16,7 @@ class TextPlayer(Player):
             try:
                 i = int(text)
                 if 0 <= i <= max:
-                    return 1
+                    return i
             except:
                 pass
                     
