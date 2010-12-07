@@ -31,6 +31,8 @@ def game_to_json(game):
     for player in game.players:
         info['players'].append(player_to_json(player))
     for building in game.buildings:
+        if isinstance(building, CastleBuilding):
+            continue
         info['buildings'].append(building_to_json(building))
     return json.dumps(info)
     
@@ -61,6 +63,15 @@ class JSONDecisionPlayer(Player):
         self.game.make_decision(decision, 0)
     
 if __name__ == '__main__':
+    
+    '''
+    tracks = []
+    for track in favor_tracks:
+        tracks.append([repr(b) for b in track])
+    
+    print json.dumps(tracks)'''
+    
+    
     
     game = Game(1, JSONDecisionPlayer)
     game.begin_turn()

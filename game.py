@@ -23,8 +23,8 @@ class Game(object):
 
         
         self.special_buildings = special_buildings
-        if players < 3:
-            self.special_buildings.remove(stables)
+        #if players < 3:
+        #    self.special_buildings.remove(stables)
         self.normal_buildings = []
         
         random.shuffle(neutral_buildings)
@@ -378,8 +378,8 @@ class Game(object):
                                        (not cost or player.money >= self.placement_cost(building, player)) and\
                                        (not cost or player.workers > 0) and\
                                        (not isinstance(building, CastleBuilding) or player not in self.castle_order)and\
-                                       (not isinstance(building, StablesBuilding) or (player not in self.stables_order and len(self.stables_order) < 3)) \
-                                    ]
+                                       (not isinstance(building, StablesBuilding) or (player not in self.stables_order and len(self.stables_order) < 3 and len(self.players)>=3)) \
+                                ]
             
     def placement_cost(self, building, player):
         '''Amount it will cost for a player to take a building'''

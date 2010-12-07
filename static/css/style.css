@@ -1,0 +1,21 @@
+#castle, #order, #favors-container{
+    height: 100px;
+}
+
+
+
+.b{
+    
+    background-color: #DDDDDD;
+    margin-bottom: 10px;
+    height: 110px;
+    text-align: center;
+
+}
+
+.b .owner, .b .worker{
+    height: 40px;
+}
+.b .label {
+    height: 30px;
+}
