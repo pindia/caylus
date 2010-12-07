@@ -374,12 +374,12 @@ class Game(object):
             cost is whether or not to take into account placement cost. '''
         return [building for building in self.buildings \
                                        if building.worker is None and \
-                                       not isinstance(building, NullBuilding) and \
+                                       not isinstance(building, UnusableBuilding) and \
                                        (not cost or player.money >= self.placement_cost(building, player)) and\
                                        (not cost or player.workers > 0) and\
                                        (not isinstance(building, CastleBuilding) or player not in self.castle_order)and\
                                        (not isinstance(building, StablesBuilding) or (player not in self.stables_order and len(self.stables_order) < 3)) \
-                                        and not isinstance(building, IncomeBuilding)]
+                                    ]
             
     def placement_cost(self, building, player):
         '''Amount it will cost for a player to take a building'''

@@ -163,6 +163,7 @@ class ArchitectAction(TradeAction):
         TradeAction.__init__(self, input=self.result.cost, output={})
         
     def execute(self, player):
+        player.remove_resources(self.input)
         i = player.game.normal_buildings.index(self.target)
         player.game.normal_buildings[i] = self.result
         self.result.owner = player
@@ -286,7 +287,10 @@ class Building(object):
     def __repr__(self):
         return '/'.join([str(action) for action in self.actions if not isinstance(action, NullAction)])
     
-class NullBuilding(Building):
+class UnusableBuilding(Building):
+    pass
+    
+class NullBuilding(UnusableBuilding):
     def activate(self, player):
         return ActionDecision(player, [NullAction()])
     def __eq__(self, other):
@@ -295,7 +299,7 @@ class NullBuilding(Building):
 class IncomeBuilding(Building):
     pass
         
-class ResidenceBuilding(IncomeBuilding):
+class ResidenceBuilding(IncomeBuilding, UnusableBuilding):
     def __init__(self):
         self.name = 'Residence'
         self.income = 1
@@ -303,7 +307,7 @@ class ResidenceBuilding(IncomeBuilding):
     def __repr__(self):
         return 'Residence [+1]'
     
-class PrestigeBuilding(Building):
+class PrestigeBuilding(UnusableBuilding):
     def __init__(self, name):
         self.name = name
         self.favors = 0
