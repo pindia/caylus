@@ -31,8 +31,6 @@ def game_to_json(game):
     for player in game.players:
         info['players'].append(player_to_json(player))
     for building in game.buildings:
-        if isinstance(building, CastleBuilding):
-            continue
         info['buildings'].append(building_to_json(building))
     return json.dumps(info)
     
