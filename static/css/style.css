@@ -8,14 +8,14 @@
     
     background-color: #DDDDDD;
     margin-bottom: 10px;
-    height: 110px;
+    height: 80px;
     text-align: center;
 
 }
 
 .b .owner, .b .worker{
-    height: 40px;
+    height: 30px;
 }
 .b .label {
-    height: 30px;
+    height: 20px;
 }
