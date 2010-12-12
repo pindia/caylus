@@ -19,3 +19,7 @@
 .b .label {
     height: 20px;
 }
+
+.available {
+    background-color: #66FF66;
+}

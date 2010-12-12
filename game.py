@@ -1,4 +1,4 @@
-import random
+import random, logging
 from player import *
 from textinterface import *
 #from building import *
@@ -15,6 +15,7 @@ class Game(object):
                 player.money += 1
             self.players.append(player)
         
+        self.continuous = False
         self.turn = -1
         self.section = SECTION_DUNGEON
         self.new_section = SECTION_DUNGEON
@@ -59,10 +60,12 @@ class Game(object):
             player.passed = False
             player.workers = 5 if self.inn_player == player else 6
         self.buildings = self.special_buildings + self.normal_buildings
-        for building in self.buildings:
+        for i, building in enumerate(self.buildings):
             building.worker = None
+            building.i = i
         
     def step_game(self):
+        #self.log('STEP_GAME Phase:%d Step:%d' % (self.phase, self.step))
         if self.turn == -1:
             self.begin_turn()
         if self.phase == PHASE_INCOME:
@@ -90,37 +93,42 @@ class Game(object):
                 else:
                     current_player.make_decision(WorkerDecision(current_player, available_buildings))
         def common_step_buildings(buildings):
-            if self.step == len(buildings):
-                self.phase += 1
-                self.step = 0
-            else:
-                building = buildings[self.step]
-                if isinstance(building, InnBuilding):
-                    if building.worker:
-                        self.inn_player = building.worker
-                        self.log("%s is the new inn owner", self.inn_player)
-                        self.step += 1
-                        self.step_game()
-                    elif self.inn_player:
-                        decision = ActionDecision(self.inn_player, [NullAction(), RemoveWorkerFromInnAction()])
-                        self.inn_player.make_decision(decision)
-                    else:
-                        self.step += 1
-                        self.step_game() 
-                elif isinstance(building, int):
-                    pass
+            while True:
+                if self.step == len(buildings):
+                    self.phase += 1
+                    self.step = 0
+                    break
                 else:
-                    if not building.worker:
-                        self.step += 1
-                        self.step_game()
-                    else:
-                        decision = building.activate(building.worker)
-                        if len(decision.actions) == 0:
-                            self.step_game()
-                        elif len(decision.actions) == 1:
-                            self.make_decision(decision, 0)
+                    building = buildings[self.step]
+                    if isinstance(building, InnBuilding):
+                        if building.worker:
+                            self.inn_player = building.worker
+                            self.log("%s is the new inn owner", self.inn_player)
+                            self.step += 1
+                            continue
+                        elif self.inn_player:
+                            decision = ActionDecision(self.inn_player, [NullAction(), RemoveWorkerFromInnAction()])
+                            self.inn_player.make_decision(decision)
                         else:
-                            building.worker.make_decision(decision)
+                            self.step += 1
+                            continue 
+                    elif isinstance(building, int):
+                        pass
+                    else:
+                        if not building.worker:
+                            self.step += 1
+                            continue
+                        else:
+                            decision = building.activate(building.worker)
+                            if len(decision.actions) == 0:
+                                self.step += 1
+                                continue
+                            elif len(decision.actions) == 1:
+                                self.make_decision(decision, 0)
+                                break
+                            else:
+                                building.worker.make_decision(decision)
+                                break
         if self.phase == PHASE_SPECIAL:
             common_step_buildings(self.special_buildings)
         if self.phase == PHASE_PROVOST:
@@ -250,10 +258,14 @@ class Game(object):
                 self.phase = -1
                 return
             self.begin_turn()
+            if self.continuous and self.section != SECTION_OVER:
+                self.step_game()
         
             
         
     def make_decision(self, decision, i):
+        #self.log('MAKE_DECISION: %s, %d Phase:%d Step:%d' % (decision, i, self.phase, self.step))
+        self.current_decision = None
         if isinstance(decision, FavorTrackDecision):
             player = decision.player
             if i == -1:
@@ -395,12 +407,13 @@ class Game(object):
         
     def log(self, message, player=None, *args):
         if not player:
-            print '[Log]' + message
+            logging.info(message)
         else:
-            print '[Log]' + message % ((player.name,) + args)
+            logging.info('[Log]' + message % ((player.name,) + args))
         
 if __name__ == '__main__':
-    game = Game(players=2, player_class=TextPlayer)
+    game = Game(players=1, player_class=TextPlayer)
+    game.continuous = True
 
     while game.section != SECTION_OVER:
         game.step_game()

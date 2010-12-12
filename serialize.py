@@ -1,4 +1,4 @@
-import json
+import json, logging
 from game import *
 
 def player_to_json(player):
@@ -6,6 +6,8 @@ def player_to_json(player):
     attrs = ['name', 'resources', 'favors', 'section_batches', 'workers', 'passed']
     for attr in attrs:
         info[attr] = getattr(player, attr)
+    if hasattr(player, 'channel'):
+        info['channel'] = player.channel
     return info
 
 def building_to_json(building):
@@ -15,23 +17,28 @@ def building_to_json(building):
     info['class'] = building.__class__.__name__
     info['name'] = building.name
     info['owner'] = None if not building.owner else building.owner.name
-    info['worker'] = None if not building.worker else building.owner.name
+    info['worker'] = None if not building.worker else building.worker.name
     info['repr'] = repr(building)
+    info['i'] = building.i
 
     return info
 
 def game_to_json(game):
     info = {}
-    attrs = ['turn', 'phase', 'step', 'section', 'bailiff', 'provost',
-                    'pass_order', 'stables_order', 'castle_order']
+    attrs = ['turn', 'phase', 'step', 'section', 'bailiff', 'provost']
     for attr in attrs:
         info[attr] = getattr(game, attr)
+    info['pass_order'] = [p.name for p in game.pass_order]
+    info['castle_order'] = [p.name for p in game.castle_order]
+    info['stables_order'] = [p.name for p in game.stables_order]
     info['players'] = []
     info['buildings'] = []
     for player in game.players:
         info['players'].append(player_to_json(player))
     for building in game.buildings:
         info['buildings'].append(building_to_json(building))
+    if hasattr(game, 'current_decision'):
+        info['current_decision'] = decision_to_json(game.current_decision)
     return json.dumps(info)
     
 def action_to_json(action):
@@ -48,12 +55,12 @@ def decision_to_json(decision):
     if hasattr(decision, 'tracks'):
         info['tracks'] = []
         for track in decision.tracks:
-            info['buildings'].append(get_track_name(track))
+            info['tracks'].append(get_track_name(track))
     if hasattr(decision, 'actions'):
         info['actions'] = []
         for action in decision.actions:
             info['actions'].append(action_to_json(action))
-    return json.dumps(info)
+    return info
     
 class JSONDecisionPlayer(Player):
     def make_decision(self, decision):
