@@ -67,11 +67,13 @@ function update_board(){
 function update_building(i){
     building = DATA.buildings[i]
     element = $('#b' + i)
-    element.children('.label').text(building.repr)
-    element.children('.provost').html(DATA.provost == i-7 ? 'O' : '&nbsp;')
-    element.children('.bailiff').html(DATA.bailiff == i-7 ? 'B' : '&nbsp;')
-    element.children('.owner').html(building.owner ? building.owner[0] : '&nbsp;')
-    element.children('.worker').html(building.worker ? building.worker[0] : '&nbsp;')
+    element.removeClass('neutral wood stone residence prestige null fixed')
+    element.addClass(building.type)
+    element.find('.label').text(building.repr)
+    element.find('.provost').html(DATA.provost == i-7 ? 'O' : '&nbsp;')
+    element.find('.bailiff').html(DATA.bailiff == i-7 ? 'B' : '&nbsp;')
+    element.find('.owner').html(building.owner ? building.owner[0] : '&nbsp;')
+    element.find('.worker').html(building.worker ? building.worker[0] : '&nbsp;')
 }
 
 function update_player(i){
@@ -156,9 +158,10 @@ function button_clicked(){
 
 function submit_decision(i){
     $('.ui-dialog-content').text('Submitting... ' + i)
+    dialog = DIALOG
+    DIALOG = null
     $.post('submit', {'id':GAME_ID, 'i':i}, function(data){
-        DIALOG.dialog('close')
-        DIALOG = null
+        dialog.dialog('close')
     });
 }
 
@@ -193,6 +196,7 @@ function perform_connect(){
     $('.ui-dialog-content').text('Connecting... ' )
     $.getJSON('connect', params, function(data) {
         DIALOG.dialog('close')
+        DiALOG = null
         DATA = data
         init_board()
         update_board()

@@ -33,6 +33,7 @@ class Game(object):
         self.normal_buildings += fixed_buildings
         self.normal_buildings += [NullBuilding("Null")] * 7
         self.normal_buildings += [fixed_gold]
+        self.normal_buildings += [NullBuilding("Null")] * 14
         
         
         self.buildings = self.special_buildings + self.normal_buildings

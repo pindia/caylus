@@ -1,4 +1,6 @@
-import json, logging
+#import json, logging
+import logging
+from django.utils import simplejson
 from game import *
 
 def player_to_json(player):
@@ -20,6 +22,19 @@ def building_to_json(building):
     info['worker'] = None if not building.worker else building.worker.name
     info['repr'] = repr(building)
     info['i'] = building.i
+    info['type'] = 'neutral'
+    if hasattr(building, 'cost'):
+        d = [('gold', 'prestige'), ('stone', 'stone'), ('wood','wood')]
+        for key, value in d:
+            if key in building.cost:
+                info['type'] = value
+                break
+    if isinstance(building, ResidenceBuilding):
+        info['type'] = 'residence'
+    if isinstance(building, NullBuilding):
+        info['type'] = 'null'
+    if hasattr(building, 'fixed'):
+        info['type'] = 'fixed'
 
     return info
 
@@ -39,7 +54,7 @@ def game_to_json(game):
         info['buildings'].append(building_to_json(building))
     if hasattr(game, 'current_decision'):
         info['current_decision'] = decision_to_json(game.current_decision)
-    return json.dumps(info)
+    return simplejson.dumps(info)
     
 def action_to_json(action):
     return {'class':action.__class__.__name__, 'repr':repr(action)}

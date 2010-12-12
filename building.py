@@ -615,6 +615,8 @@ fixed_gold.fixed = True
 
 
 special_buildings = [castle, gate, trading_post, merchant_guild, joust_field, stables, inn]
+for building in special_buildings:
+    building.fixed = True
 neutral_buildings = [neutral_carpenter, neutral_farm, neutral_forest, neutral_sawmill, neutral_quarry, neutral_market]
 fixed_buildings = [fixed_peddler, fixed_carpenter]
 

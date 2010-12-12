@@ -8,18 +8,31 @@
     
     background-color: #DDDDDD;
     margin-bottom: 10px;
-    height: 80px;
+    height: 81px;
     text-align: center;
+    outline: 1px solid black;
 
 }
 
+
 .b .owner, .b .worker{
-    height: 30px;
+    height: 25px;
 }
 .b .label {
     height: 20px;
 }
 
 .available {
-    background-color: #66FF66;
+    outline: 3px solid green;
 }
+
+.current {
+    outline: 2px solid red;
+}
+
+.wood { background-color: #E0B97E; }
+.stone { background-color: #A3A39B; }
+.neutral { background-color: #E0BFB4; }
+.residence {background-color: #74B980; }
+.prestige {background-color: #85B0D5;}
+.null {background-color: #FFFFFF; }
