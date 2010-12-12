@@ -49,8 +49,10 @@ class WebPlayer(Player):
     def make_decision(self, decision):
         self.game.current_decision = decision
         save_game(self.game)
-        logging.info('Presenting client with decision %s Phase:%d Step:%d Data:%s' % (decision, self.game.phase, self.game.step, decision.__dict__))
-        channel.send_message(self.clientid, game_to_json(self.game))
+        logging.info('Presenting client with decision %s ID: %s Phase:%d Step:%d Data:%s' % (decision, self.clientid, self.game.phase, self.game.step, decision.__dict__))
+        for player in self.game.players:
+            if hasattr(player, 'clientid'):
+                channel.send_message(player.clientid, game_to_json(self.game))
 
 class MainPage(webapp.RequestHandler):
     ''' Simply returns the static html and javascript '''
@@ -61,17 +63,32 @@ class MainPage(webapp.RequestHandler):
 class Connect(webapp.RequestHandler):
     def get(self):
         self.response.headers['Content-Type'] = 'text/plain'
-        game = Game(1, WebPlayer)
-        game.id = self.request.get('id')
-        game.continuous = True
+        
+        id = self.request.get('id')
+        player = int(self.request.get('player'))
+        create = self.request.get('create') == '1'
+        
+        if create:
+            game = Game(player, WebPlayer)
+            game.id = id
+            game.continuous = True
+            player = 0
+
+        else:
+            game = load_game(id)
         
         clientid = str(random.randint(1, 100000))
         token = channel.create_channel(clientid)
-        game.players[0].clientid = clientid
-        game.players[0].channel = token
+        game.players[player].clientid = clientid
+        game.players[player].channel = token
         
-        game.begin_turn()
-        game.step_game()
+        logging.info('Player %s connects with client ID %s' % (player, clientid))
+
+        
+        if create:
+            game.begin_turn()
+            game.step_game()
+
         data = game_to_json(game)
         save_game(game)
         self.response.out.write(data)
@@ -82,6 +99,7 @@ class Submit(webapp.RequestHandler):
         
         
         game = load_game(self.request.get('id'))
+        logging.info('Client ID: %s' % game.players[0].clientid)
         game.make_decision(game.current_decision, int(self.request.get('i')))
         save_game(game)
         
