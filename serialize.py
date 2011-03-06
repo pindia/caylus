@@ -16,7 +16,7 @@ def building_to_json(building):
     if not building:
         return None
     info = {}
-    info['class'] = building.__class__.__name__
+    info['cls'] = building.__class__.__name__
     info['name'] = building.name
     info['owner'] = None if not building.owner else building.owner.name
     info['worker'] = None if not building.worker else building.worker.name
@@ -46,6 +46,7 @@ def game_to_json(game):
     info['pass_order'] = [p.name for p in game.pass_order]
     info['castle_order'] = [p.name for p in game.castle_order]
     info['stables_order'] = [p.name for p in game.stables_order]
+    info['inn_player'] = game.inn_player.name if game.inn_player else None
     info['players'] = []
     info['buildings'] = []
     for player in game.players:
@@ -61,7 +62,7 @@ def action_to_json(action):
     
 def decision_to_json(decision):
     info = {}
-    info['class'] = decision.__class__.__name__
+    info['cls'] = decision.__class__.__name__
     info['player'] = decision.player.name
     if hasattr(decision, 'buildings'):
         info['buildings'] = []

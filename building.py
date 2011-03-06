@@ -1,4 +1,5 @@
 from config import *
+import logging
 
 
 
@@ -91,6 +92,7 @@ class ConstructAction(TradeAction):
         
     def can_execute(self, player):
         # Prevent double construction of buildings
+        logging.info('Construction of %s: %s, %s' % (self.building, TradeAction.can_execute(self, player),self.building in (player.game.wood_buildings + player.game.stone_buildings)))
         return TradeAction.can_execute(self, player) and self.building in (player.game.wood_buildings + player.game.stone_buildings)
         
     def execute(self, player):
@@ -286,6 +288,7 @@ class Building(object):
             
     def __repr__(self):
         return '/'.join([str(action) for action in self.actions if not isinstance(action, NullAction)])
+
     
 class UnusableBuilding(Building):
     pass
@@ -483,6 +486,7 @@ class CompoundBuilding(Building):
     
 class WoodPeddlerBuilding(CompoundBuilding):
     def __init__(self):
+        self.name = 'Peddler (Wood)'
         actions = [TradeAction({'money':1}, {resource:1}) for resource in RESOURCES if resource != 'gold']
         CompoundBuilding.__init__(self, 'Peddler', ActionDecision(None, actions), ActionDecision(None, actions))
     def __repr__(self):
@@ -575,22 +579,22 @@ stone_church = Building("Church", NullAction(), TradeAction({'money':2}, {'point
 stone_bank = Building("Bank", NullAction(), TradeAction({'money':2}, {'gold':1}), TradeAction({'money':5},{'gold':2})).constructable(6, stone=1, wood=1)
 stone_jeweler = Building("Jeweler", NullAction(), TradeAction({'gold':1}, {'points':5}), TradeAction({'gold':2},{'points':9})).constructable(6, stone=1, cloth=1)
 stone_alchemist = StoneAlchemistBuilding().constructable(6, wood=1, stone=1)
-stone_farm = StoneProductionBuilding("Farm", {'food':2, 'cloth':1}).constructable(3, stone=1, food=1)
+stone_farm = StoneProductionBuilding("Farm (Stone)", {'food':2, 'cloth':1}).constructable(3, stone=1, food=1)
 stone_park = StoneProductionBuilding("Park", {'wood':2, 'food':1}).constructable(3, stone=1, food=1)
 stone_workshop = StoneProductionBuilding("Workshop", {'stone':2, 'cloth':1}).constructable(3, stone=1, food=1)
 stone_architect1 = ArchitectBuilding("Architect").constructable(6, stone=1, food=1)
-stone_architect2 = ArchitectBuilding("Architect").constructable(6, stone=1, food=1)
+stone_architect2 = ArchitectBuilding("Architect (2)").constructable(6, stone=1, food=1)
 
 
 stone_buildings = [stone_church, stone_bank, stone_jeweler, stone_tailor, stone_alchemist,
                    stone_farm, stone_park, stone_workshop, stone_architect1, stone_architect2]
 
-wood_farm_food = Building("Farm",ProduceAction(food=2), ProduceAction(cloth=1)).constructable(2, wood=1, food=1)
-wood_farm_cloth = Building("Farm",ProduceAction(cloth=2), ProduceAction(food=1)).constructable(2, wood=1, food=1)
+wood_farm_food = Building("Farm (Food)",ProduceAction(food=2), ProduceAction(cloth=1)).constructable(2, wood=1, food=1)
+wood_farm_cloth = Building("Farm (Cloth)",ProduceAction(cloth=2), ProduceAction(food=1)).constructable(2, wood=1, food=1)
 wood_quarry = Building("Quarry", ProduceAction(stone=2)).constructable(2, wood=1, food=1)
 wood_sawmill = Building("Sawmill", ProduceAction(wood=2)).constructable(2, wood=1, food=1)
-wood_market = MarketBuilding("Market", 6).constructable(2, wood=1, any=1)
-wood_peddler = WoodPeddlerBuilding().constructable(2, wood=1, any=1)
+wood_market = MarketBuilding("Market", 6).constructable(4, wood=1, any=1)
+wood_peddler = WoodPeddlerBuilding().constructable(4, wood=1, any=1)
 wood_mason = MasonBuilding("Mason").constructable(4, wood=1, food=1)
 wood_lawyer = LawyerBuilding("Lawyer").constructable(4, wood=1, cloth=1)
 
@@ -598,16 +602,16 @@ wood_buildings = [wood_farm_food, wood_farm_cloth, wood_quarry, wood_sawmill, wo
 
 
 
-neutral_farm = Building("Farm",ProduceAction(food=1), ProduceAction(cloth=1))
+neutral_farm = Building("Farm (Neutral)",ProduceAction(food=1), ProduceAction(cloth=1))
 neutral_forest = Building("Forest",ProduceAction(food=1), ProduceAction(wood=1))
-neutral_sawmill = Building("Sawmill", ProduceAction(wood=1))
-neutral_quarry = Building("Quarry", ProduceAction(stone=1))
-neutral_market = MarketBuilding("Market", 4)
+neutral_sawmill = Building("Sawmill (Neutral)", ProduceAction(wood=1))
+neutral_quarry = Building("Quarry (Neutral)", ProduceAction(stone=1))
+neutral_market = MarketBuilding("Market (Neutral)", 4)
 neutral_carpenter = CarpenterBuilding("Carpenter")
 
 fixed_peddler = PeddlerBuilding("Peddler", 2)
 fixed_peddler.fixed = True
-fixed_carpenter = CarpenterBuilding("Carpenter")
+fixed_carpenter = CarpenterBuilding("Carpenter (Fixed)")
 fixed_carpenter.fixed = True
 fixed_gold = Building("Gold Mine", ProduceAction(gold=1))
 fixed_gold.fixed = True

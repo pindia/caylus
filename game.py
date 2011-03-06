@@ -110,6 +110,7 @@ class Game(object):
                         elif self.inn_player:
                             decision = ActionDecision(self.inn_player, [NullAction(), RemoveWorkerFromInnAction()])
                             self.inn_player.make_decision(decision)
+                            continue
                         else:
                             self.step += 1
                             continue 
@@ -137,7 +138,7 @@ class Game(object):
                 self.phase += 1
                 self.step = 0
             else:
-                player = self.players[self.step]
+                player = self.pass_order[self.step]
                 decision = bribe_provost.activate(player)
                 if len(decision.actions) == 1:
                     self.make_decision(decision, 0)
@@ -265,7 +266,7 @@ class Game(object):
             
         
     def make_decision(self, decision, i):
-        #self.log('MAKE_DECISION: %s, %d Phase:%d Step:%d' % (decision, i, self.phase, self.step))
+        self.log('MAKE_DECISION: %s, %d Phase:%d Step:%d' % (decision, i, self.phase, self.step))
         self.current_decision = None
         if isinstance(decision, FavorTrackDecision):
             player = decision.player
@@ -365,6 +366,7 @@ class Game(object):
             decision = self.decision_stack.pop()
             decision.filter_actions()
             if isinstance(decision, ActionDecision) and len(decision.actions) == 1:
+                self.log(repr(decision.actions))
                 self.make_decision(decision, 0)
             elif isinstance(decision, FavorTrackDecision) and len(decision.tracks) == 1:
                 self.make_decision(decision, 0)

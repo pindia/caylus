@@ -22,16 +22,18 @@ function init_board(){
         $(this).append('<div class="span-1 bailiff">&nbsp;</div>');
         $(this).append('<div class="span-1 provost">&nbsp;</div>');
         $(this).append('<div class="span-1 owner last">&nbsp;</div>');
-        $(this).append('<div class="span-1">&nbsp;</div>');
-        $(this).append('<div class="span-1 worker">&nbsp;</div>');
-        $(this).append('<div class="span-1 last">&nbsp;</div>');
+        $(this).append('<div class="span-3 worker last">&nbsp;</div>');
+        //$(this).append('<div class="span-1 worker">&nbsp;</div>');
+        //$(this).append('<div class="span-1 last">&nbsp;</div>');
         $(this).append('<div class="span-3 label last">&nbsp;</div>'); 
     });
+    
+
     
     for(var i=0; i<TRACKS.length; i++){
         $('#favors').append('<tr id="t' + i + '"></tr>')
         $('#favors').children(':last').append('<td id="t'+i+'c-1">-</td>')
-        for(var j=0; j<TRACKS.length; j++){
+        for(var j=0; j<TRACKS[i].length; j++){
             $('#favors').children(':last').append('<td id="t'+i+'c'+j+'">'+TRACKS[i][j]+'</td>')
         }
     }
@@ -46,41 +48,112 @@ function init_board(){
 }
 
 function update_board(){
-    turn_order = ''
+    /*turn_order = ''
     for(var i=0; i<DATA.players.length; i++){
         turn_order += DATA.players[i].name + '<br>';
     }
-    $('#order').html(turn_order)
+    $('#order').html(turn_order)*/
+    
+    // Update buildings
     
     for(var i=0; i<DATA.buildings.length; i++){
         update_building(i);
     }
+    
+    $('#b0 .worker').html('&nbsp;')
+    for(var i=0; i<DATA.castle_order.length; i++){
+        $('#b0 .worker').append(piece_image('worker', DATA.castle_order[i]))
+    }
+    
+    $('#b5 .worker').html('&nbsp;')
+    for(var i=0; i<DATA.stables_order.length; i++){
+        $('#b5 .worker').append(piece_image('worker', DATA.stables_order[i]))
+        
+    }
+    
+    if(DATA.bailiff < 11)
+        $('#b18 .bailiff').text('D')
+    if(DATA.bailiff < 17)
+        $('#b24 .bailiff').text('W')
+    if(DATA.bailiff < 23)
+        $('#b30 .bailiff').text('T')
+    
+    // Update player status markers
+    
     for(var i=0; i<DATA.players.length; i++){
         update_player(i)
     }
+    
+    // Update bridge
+    if(!DATA.pass_order){
+        $('#bridge').text('No players have passed.')
+    } else{
+        $('#bridge').text('Passed: ' + DATA.pass_order)
+    }
+    
+    // Update castle tracker
+    $('#castle-tracker').text('')
+    for(var i=0; i<DATA.players.length; i++){
+        player = DATA.players[i]
+        $('#castle-tracker').append(player.name + ': ' + player.section_batches[DATA.section])
+    }
+    
+        
+    // Create the red highlight
+    
+    $('*').removeClass('current')
+    if(DATA.phase == 2)
+        $('#b' + (DATA.step + 2)).addClass('current')
+    if(DATA.phase == 3)
+        $('#bridge').addClass('current')
+    if(DATA.phase == 4){
+        $('#b' + (DATA.step + 7)).addClass('current')
+    }
+    if(DATA.phase == 5 || DATA.phase == 6)
+        $('#b0').addClass('current')
     
     if(DATA.current_decision && DATA.current_decision.player == PLAYER){
         show_decision()
     }
 }
 
+function player_initial(player){
+    if(player == 'Black')
+        return 'K'
+    return player[0]
+}
+
+function static_piece_image(type, display){
+    if(!display)
+        return '&nbsp;'
+    return '<img src="/static/img/pieces/' + type + '.png">';
+}
+
+function piece_image(type, player){
+    if(!player)
+        return '&nbsp;'
+    return '<img src="/static/img/pieces/' + type + player_initial(player) + '.png">';
+}
+
 function update_building(i){
     building = DATA.buildings[i]
+    if(i == 6)
+        building.owner = DATA.inn_player
     element = $('#b' + i)
     element.removeClass('neutral wood stone residence prestige null fixed')
     element.addClass(building.type)
     element.find('.label').text(building.repr)
-    element.find('.provost').html(DATA.provost == i-7 ? 'O' : '&nbsp;')
-    element.find('.bailiff').html(DATA.bailiff == i-7 ? 'B' : '&nbsp;')
-    element.find('.owner').html(building.owner ? building.owner[0] : '&nbsp;')
-    element.find('.worker').html(building.worker ? building.worker[0] : '&nbsp;')
+    element.find('.provost').html(static_piece_image('provost', DATA.provost == i-7))
+    element.find('.bailiff').html(static_piece_image('bailiff', DATA.bailiff == i-7))
+    element.find('.owner').html(piece_image('house',building.owner))
+    element.find('.worker').html(piece_image('worker',building.worker))
 }
 
 function update_player(i){
     player = DATA.players[i]
     $('#p{0}n'.format(i)).text(player.name)
-    $('#p{0}p'.format(i)).text(player.resources['points'])
-    $('#p{0}m'.format(i)).text(player.resources['money'])
+    $('#p{0}p'.format(i)).text(player.resources['points'] + 'P')
+    $('#p{0}m'.format(i)).text('$' + player.resources['money'])
     resources = ' '
     for(var j in RESOURCES){
         resource = RESOURCES[j]
@@ -93,16 +166,25 @@ function update_player(i){
         }
     }
     $('#p{0}r'.format(i)).text(resources)
+    
+    // Royal favor board
+    $('.rf' + i).remove()
+    for(var j=0; j<player.favors.length; j++){
+        k = player.favors[j]
+        element = $('#t'+j+'c'+k)
+        element.append(piece_image('worker', player.name))
+        element.children().last().attr('width', 5).addClass('rf'+i)
+    }
 }
 
 function show_decision(){
     DECISION = DATA.current_decision
-    if(DATA.current_decision.class == 'WorkerDecision'){
+    if(DATA.current_decision.cls == 'WorkerDecision'){
         show_worker_decision()
-    } else if(DATA.current_decision.class == 'ActionDecision' ||
-              DATA.current_decision.class == 'FavorDecision'){
+    } else if(DATA.current_decision.cls == 'ActionDecision' ||
+              DATA.current_decision.cls == 'FavorDecision'){
         show_action_decision()
-    } else if(DATA.current_decision.class == 'FavorTrackDecision'){
+    } else if(DATA.current_decision.cls == 'FavorTrackDecision'){
         show_favor_track_decision()
     }
 }
@@ -127,7 +209,6 @@ function show_worker_decision(){
         $('.b').removeClass('available')
         submit_decision($(this).attr('i'))
     });
-    console.log(DECISION.buildings)
     for(var i=0; i<DECISION.buildings.length; i++){
         building = DECISION.buildings[i]
         if(building != null){
@@ -166,12 +247,12 @@ function submit_decision(i){
 }
 
 function update_received(message){
-    if(!DIALOG){
-        DATA = $.parseJSON(message.data)
-        update_board()
-    } else {
-        console.log('Warning: Ignoring update')
+    if(DIALOG){
+        DIALOG.dialog('close')
+        DIALOG = null
     }
+    DATA = $.parseJSON(message.data)
+    update_board()
     //show_decision()
 }
 
@@ -194,9 +275,10 @@ function perform_connect(){
               'player':$('#player').attr('value'),
               'create':($('#create').is(':checked') ? '1' : '0')}
     $('.ui-dialog-content').text('Connecting... ' )
+    dialog = DIALOG
+    DIALOG = null
     $.getJSON('connect', params, function(data) {
-        DIALOG.dialog('close')
-        DiALOG = null
+        dialog.dialog('close')
         DATA = data
         init_board()
         update_board()

@@ -2,22 +2,38 @@
     height: 100px;
 }
 
-
+#bridge{
+    height: 80px;
+}
 
 .b{
     
     background-color: #DDDDDD;
     margin-bottom: 10px;
-    height: 81px;
+    height: 80px;
     text-align: center;
     outline: 1px solid black;
 
 }
 
 
-.b .owner, .b .worker{
+.b .owner{
+    padding-top: 5px;
     height: 25px;
 }
+
+.b .bailiff {
+    padding-top:5px;
+}
+
+.b .provost{
+    padding-top:10px;
+}
+
+.b .worker{
+    height: 30px;
+}
+
 .b .label {
     height: 20px;
 }
