@@ -257,11 +257,11 @@ function update_received(message){
 }
 
 function show_connect_dialog(){
-    var dialog = $('<div></div>').hide()
+    var dialog = $('<div></div>')
     dialog.append('Game ID:<input type="entry" id="game-id" value="0" size="2"> Player:<input type="entry" id="player" value="0" size="2">')
     dialog.append('<br>Create: <input type="checkbox" id="create">')
-    dialog.append('<br><input type="button" value="Connect"');
-    dialog.children().last().click(perform_connect)
+    dialog.append('<br><input type="button" value="Connect">');
+    dialog.children('input[type="button"]').click(perform_connect)
     dialog.dialog({title:'Connect to Server', closeOnEscape:false});
     dialog.closest('.ui-dialog').find('.ui-dialog-titlebar-close').hide();
     DIALOG = dialog    
@@ -291,7 +291,7 @@ function perform_connect(){
 
 
 $(document).ready(function(){
-    show_connect_dialog();
+    setTimeout(show_connect_dialog, 1000);
     $('.b').click(function(){
         if($(this).hasClass('available')){
             $('.b').removeClass('available')

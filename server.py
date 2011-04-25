@@ -49,7 +49,8 @@ class WebPlayer(Player):
     def make_decision(self, decision):
         self.game.current_decision = decision
         save_game(self.game)
-        logging.info('Presenting client with decision %s ID: %s Phase:%d Step:%d Data:%s' % (decision, self.clientid, self.game.phase, self.game.step, decision.__dict__))
+        if hasattr(self, 'clientid'):
+            logging.info('Presenting client with decision %s ID: %s Phase:%d Step:%d Data:%s' % (decision, self.clientid, self.game.phase, self.game.step, decision.__dict__))
         for player in self.game.players:
             if hasattr(player, 'clientid'):
                 channel.send_message(player.clientid, game_to_json(self.game))
