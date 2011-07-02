@@ -26,14 +26,6 @@ class WebPlayer(Player):
         logging.info('Presenting clients with decision %s Phase:%d Step:%d Data:%s' % (decision, self.game.phase, self.game.step, decision.__dict__))
         self.game.current_decision = decision
         MessageMixin().new_messages([game_to_json(self.game)])
-        #self.game.current_decision = decision
-        #save_game(self.game)
-        #if hasattr(self, 'clientid'):
-        #    logging.info('Presenting client with decision %s ID: %s Phase:%d Step:%d Data:%s' % (decision, self.clientid, self.game.phase, self.game.step, decision.__dict__))
-        #for player in self.game.players:
-        #    if hasattr(player, 'clientid'):
-        #        channel.send_message(player.clientid, game_to_json(self.game))
-
 
 class Application(tornado.web.Application):
     def __init__(self):
@@ -65,11 +57,11 @@ class ConnectHandler(tornado.web.RequestHandler):
             game.continuous = True
             player = 0
             GAMES[game.id] = game
-            
-        if create:
             game.begin_turn()
             game.step_game()
-            
+        else:
+            game = GAMES[id]
+                        
         data = game_to_json(game)
         self.write(data)
         
