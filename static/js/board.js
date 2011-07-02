@@ -251,7 +251,7 @@ function update_received(message){
         DIALOG.dialog('close')
         DIALOG = null
     }
-    DATA = $.parseJSON(message.data)
+    DATA = $.parseJSON(message)
     update_board()
     //show_decision()
 }
@@ -282,9 +282,8 @@ function perform_connect(){
         DATA = data
         init_board()
         update_board()
-        channel = new goog.appengine.Channel(DATA.players[PLAYER_ID].channel);
-        socket = channel.open();
-        socket.onmessage = update_received;
+        updater.update_received = update_received
+        updater.poll();
     });
 }
 
