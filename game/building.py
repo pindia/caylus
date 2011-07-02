@@ -396,7 +396,8 @@ class LawyerBuilding(Building):
     def activate(self, player): # Transformable building must be dynamically found
         buildings = [building for building in player.game.normal_buildings if \
                         (building.owner == None or building.owner == player) and not hasattr(building, 'fixed') \
-                        and not isinstance(building, LawyerBuilding) and not isinstance(building, NullBuilding)]
+                        and not isinstance(building, LawyerBuilding) and not isinstance(building, NullBuilding) \
+                        and not isinstance(building, PrestigeBuilding) and not isinstance(building, ResidenceBuilding)]
         self.actions = [NullAction()]
         for building in buildings:
             self.actions.append(LawyerAction(building, discount=self.discount))
