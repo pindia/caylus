@@ -21,11 +21,17 @@ def render_template(name):
     t = Template(filename=os.path.join(TEMPLATE_DIR, name))
     return t.render()
     
+class Message(object):
+    def __init__(self, game_id, data):
+        self.id = game_id
+        self.data = data
+    
 class WebPlayer(Player):
     def make_decision(self, decision):
         logging.info('Presenting clients with decision %s Phase:%d Step:%d Data:%s' % (decision, self.game.phase, self.game.step, decision.__dict__))
         self.game.current_decision = decision
-        MessageMixin().new_messages([game_to_json(self.game)])
+        m = Message(self.game.id, game_to_json(self.game))
+        MessageMixin().new_messages([m])
 
 class Application(tornado.web.Application):
     def __init__(self):
@@ -36,6 +42,7 @@ class Application(tornado.web.Application):
             (r"/a/message/updates", MessageUpdatesHandler),
         ]
         settings = dict(
+            cookie_secret="43oETzKXQAGaYdkL5gEmGeJJFuYh7EQnp2XdTP1o/Vo=",
             static_path=STATIC_DIR,
         )
         tornado.web.Application.__init__(self, handlers, **settings)
@@ -61,7 +68,7 @@ class ConnectHandler(tornado.web.RequestHandler):
             game.step_game()
         else:
             game = GAMES[id]
-                        
+                                    
         data = game_to_json(game)
         self.write(data)
         
@@ -78,7 +85,8 @@ class MessageUpdatesHandler(tornado.web.RequestHandler, MessageMixin):
     def post(self):
         cursor = self.get_argument("cursor", None)
         self.wait_for_messages(self.async_callback(self.on_new_messages),
-                               cursor=cursor)
+                               cursor=cursor,
+                               id = self.get_argument('id'))
 
     def on_new_messages(self, messages):
         # Closed client connection

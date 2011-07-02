@@ -283,6 +283,7 @@ function perform_connect(){
         init_board()
         update_board()
         updater.update_received = update_received
+        updater.id = GAME_ID
         updater.poll();
     });
 }

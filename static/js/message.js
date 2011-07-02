@@ -1,10 +1,11 @@
 var updater = {
     errorSleepTime: 500,
     cursor: null,
+    id: null,
 
     poll: function() {
         //var args = {"_xsrf": getCookie("_xsrf")};
-        var args = {}
+        var args = {'id':updater.id}
         if (updater.cursor) args.cursor = updater.cursor;
         $.ajax({url: "/a/message/updates", type: "POST", dataType: "text",
                 data: $.param(args), success: updater.onSuccess,
