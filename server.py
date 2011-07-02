@@ -9,7 +9,7 @@ from game.game import Game
 from game.player import Player
 from game.serialize import game_to_json
 
-from message import MessageMixin
+from message import MessageQueue
 
 GAMES = {}
 
@@ -21,17 +21,13 @@ def render_template(name):
     t = Template(filename=os.path.join(TEMPLATE_DIR, name))
     return t.render()
     
-class Message(object):
-    def __init__(self, game_id, data):
-        self.id = game_id
-        self.data = data
     
 class WebPlayer(Player):
     def make_decision(self, decision):
         logging.info('Presenting clients with decision %s Phase:%d Step:%d Data:%s' % (decision, self.game.phase, self.game.step, decision.__dict__))
         self.game.current_decision = decision
-        m = Message(self.game.id, game_to_json(self.game))
-        MessageMixin().new_messages([m])
+        queue = MessageQueue.get_queue(self.game.id)
+        queue.new_messages([game_to_json(self.game)])
 
 class Application(tornado.web.Application):
     def __init__(self):
@@ -59,6 +55,7 @@ class ConnectHandler(tornado.web.RequestHandler):
         create = self.get_argument('create') == '1'
         
         if create:
+            MessageQueue.delete_queue(id)
             game = Game(player, WebPlayer)
             game.id = id
             game.continuous = True
@@ -80,13 +77,13 @@ class SubmitHandler(tornado.web.RequestHandler):
         self.write('Ok')
         
         
-class MessageUpdatesHandler(tornado.web.RequestHandler, MessageMixin):
+class MessageUpdatesHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
     def post(self):
         cursor = self.get_argument("cursor", None)
-        self.wait_for_messages(self.async_callback(self.on_new_messages),
-                               cursor=cursor,
-                               id = self.get_argument('id'))
+        queue = MessageQueue.get_queue(self.get_argument('id'))
+        queue.wait_for_messages(self.async_callback(self.on_new_messages),
+                               cursor=cursor)
 
     def on_new_messages(self, messages):
         # Closed client connection
