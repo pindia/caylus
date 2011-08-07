@@ -14,7 +14,7 @@ Open `localhost:8080` and wait for the Connect dialog to open. To create a new g
 
 Rules
 ------
-See the official [Caylus rules](www.ystari.com/caylus/Caylus72E.pdf).
+See the official [Caylus rules](http://www.ystari.com/caylus/Caylus72E.pdf).
 
 Notation
 ----------
