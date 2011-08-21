@@ -44,6 +44,7 @@ class MessageQueue(object):
                 callback(messages)
             except:
                 logging.error("Error in waiter callback", exc_info=True)
+        self.waiters = []
         self.cache.extend(messages)
         if len(self.cache) > self.cache_size:
             self.cache = self.cache[-self.cache_size:]

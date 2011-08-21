@@ -16,6 +16,7 @@ class Game(object):
             self.players.append(player)
         
         self.continuous = False
+        self.id = None
         self.turn = -1
         self.section = SECTION_DUNGEON
         self.new_section = SECTION_DUNGEON
@@ -49,6 +50,7 @@ class Game(object):
         
     def begin_turn(self):
         self.turn += 1
+        self.log('Beginning turn %d' % self.turn)
         self.phase = 0
         self.step = 0
         self.pass_order = []
@@ -110,7 +112,7 @@ class Game(object):
                         elif self.inn_player:
                             decision = ActionDecision(self.inn_player, [NullAction(), RemoveWorkerFromInnAction()])
                             self.inn_player.make_decision(decision)
-                            continue
+                            break
                         else:
                             self.step += 1
                             continue 
@@ -266,7 +268,7 @@ class Game(object):
             
         
     def make_decision(self, decision, i):
-        self.log('MAKE_DECISION: %s, %d Phase:%d Step:%d' % (decision, i, self.phase, self.step))
+        #self.log('MAKE_DECISION: %s, %d Phase:%d Step:%d' % (decision, i, self.phase, self.step))
         self.current_decision = None
         if isinstance(decision, FavorTrackDecision):
             player = decision.player
@@ -313,6 +315,7 @@ class Game(object):
                 self.pass_order.append(player)
                 player.passed = True
             else:
+                self.log('%s places worker on %s', player, building)
                 if isinstance(building, CastleBuilding):
                     self.castle_order.append(player)
                     self.castle_batches.append(0)
@@ -332,6 +335,8 @@ class Game(object):
             action = decision.actions[i]
             if hasattr(action, 'spaces'):
                 self.log('%s moves the provost %d spaces', player, action.spaces)
+            else:
+                self.log('%s does not move the provost', player)
             action.execute(player)
             self.step += 1
             self.step_game()
@@ -410,9 +415,9 @@ class Game(object):
         
     def log(self, message, player=None, *args):
         if not player:
-            logging.info(message)
+            logging.getLogger('game').info('[Log][%s]' % self.id + message)
         else:
-            logging.info('[Log]' + message % ((player.name,) + args))
+            logging.getLogger('game').info('[Log][%s]' % self.id + message % ((player.name,) + args))
         
 if __name__ == '__main__':
     game = Game(players=1, player_class=TextPlayer)

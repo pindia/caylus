@@ -3,7 +3,8 @@ from mako.template import Template
 import tornado.ioloop
 import tornado.web
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.WARNING)
+logging.getLogger('game').setLevel(logging.INFO)
 
 from game.game import Game
 from game.player import Player
@@ -24,7 +25,9 @@ def render_template(name):
     
 class WebPlayer(Player):
     def make_decision(self, decision):
-        logging.info('Presenting clients with decision %s Phase:%d Step:%d Data:%s' % (decision, self.game.phase, self.game.step, decision.__dict__))
+        #logging.info('Presenting clients with decision %s Phase:%d Step:%d Data:%s' % (decision, self.game.phase, self.game.step, decision.__dict__))
+        logging.info('Presenting decision for game %s on step %d' % (self.game.id, self.game.step))
+        logging.info(GAMES)
         self.game.current_decision = decision
         queue = MessageQueue.get_queue(self.game.id)
         queue.new_messages([game_to_json(self.game)])
