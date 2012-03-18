@@ -45,7 +45,7 @@ class BribeProvostAction(Action):
         
         
     def __repr__(self):
-        return '%d->P%+d' % (abs(self.spaces), self.spaces)
+        return '{$%d}->P%+d' % (abs(self.spaces), self.spaces)
        
 class ProduceAction(Action):
     def __init__(self, **output):

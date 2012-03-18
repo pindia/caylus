@@ -159,7 +159,7 @@ function update_board(){
     
     $('*').removeClass('current')
     if(DATA.phase == 2)
-        $('#b' + (DATA.step + 2)).addClass('current')
+        $('#b' + (DATA.step + 0)).addClass('current')
     if(DATA.phase == 3)
         $('#bridge').addClass('current')
     if(DATA.phase == 4){
@@ -249,10 +249,15 @@ function show_decision(){
 function show_action_decision(){
     var dialog = $('<div></div>').hide()
     for(var i=0; i<DECISION.actions.length; i++){
-        dialog.append('<input type="button" i="'+i+'"value="'+DECISION.actions[i].repr+'">')
+        dialog.append('<div class="btn" i="'+i+'">');
+        dialog.children().last().html(substitute_images(DECISION.actions[i].repr));
         dialog.children().last().click(button_clicked)
     }
-    dialog.dialog({title:'Select Action', closeOnEscape:false});
+    console.log(DECISION);
+    var title = 'Select Action';
+    if(DECISION.actions.length > 1 && DECISION.actions[1].class == 'BribeProvostAction')
+        title = 'Do you want to bribe the provost?';
+    dialog.dialog({title:title, closeOnEscape:false});
     dialog.closest('.ui-dialog').find('.ui-dialog-titlebar-close').hide();
     DIALOG = dialog
 
