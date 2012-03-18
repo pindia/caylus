@@ -2,6 +2,7 @@ import random, logging
 from player import *
 from textinterface import *
 #from building import *
+import copy
 
 class Game(object):
     def __init__(self, players=2, player_class=Player):
@@ -36,17 +37,17 @@ class Game(object):
         self.normal_buildings += [fixed_gold]
         self.normal_buildings += [NullBuilding("Null")] * 14
 
-        for b in stone_buildings + wood_buildings:
-            self.normal_buildings[self.normal_buildings.index(null_building)] = b
+        #for b in stone_buildings + wood_buildings:
+        #    self.normal_buildings[self.normal_buildings.index(null_building)] = b
         
         
         self.buildings = self.special_buildings + self.normal_buildings
         for building in self.buildings:
             building.owner = None
             
-        self.wood_buildings = wood_buildings
-        self.stone_buildings = stone_buildings
-        self.prestige_buildings = prestige_buildings
+        self.wood_buildings = copy.deepcopy(wood_buildings)
+        self.stone_buildings = copy.deepcopy(stone_buildings)
+        self.prestige_buildings = copy.deepcopy(prestige_buildings)
 
         self.bailiff = INITIAL_BAILIFF
         self.provost = INITIAL_BAILIFF
@@ -425,7 +426,6 @@ class Game(object):
             rendered = message % ((player.name,) + args)
         logging.getLogger('game').info('[Log][%s]' % self.id + rendered)
         self.turn_logs.append(rendered)
-
 
 
 if __name__ == '__main__':

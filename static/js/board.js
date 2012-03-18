@@ -107,6 +107,9 @@ function update_board(){
     $('#log').html('<ul></ul>')
     for(var i=0; i<DATA.turn_logs.length; i++){
         $('#log').find('ul').append('<li>' + DATA.turn_logs[i] + '</li>')
+        if(DATA.turn_logs[i].indexOf('Beginning') == 0){
+            $('#log').find('li').last().css({'font-weight':'bold', 'margin-top':'20px'})
+        }
 
     }
     

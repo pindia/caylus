@@ -49,7 +49,7 @@ def game_to_json(game):
     info['inn_player'] = game.inn_player.name if game.inn_player else None
     info['players'] = []
     info['buildings'] = []
-    info['turn_logs'] = game.turn_logs
+    info['turn_logs'] = game.turn_logs[-20:]
     for player in game.players:
         info['players'].append(player_to_json(player))
     for building in game.buildings:
