@@ -35,6 +35,9 @@ class Game(object):
         self.normal_buildings += [NullBuilding("Null")] * 7
         self.normal_buildings += [fixed_gold]
         self.normal_buildings += [NullBuilding("Null")] * 14
+
+        for b in stone_buildings:
+            self.normal_buildings[self.normal_buildings.index(null_building)] = b
         
         
         self.buildings = self.special_buildings + self.normal_buildings
@@ -44,7 +47,7 @@ class Game(object):
         self.wood_buildings = wood_buildings
         self.stone_buildings = stone_buildings
         self.prestige_buildings = prestige_buildings
-        
+
         self.bailiff = INITIAL_BAILIFF
         self.provost = INITIAL_BAILIFF
 

@@ -491,7 +491,7 @@ class WoodPeddlerBuilding(CompoundBuilding):
         actions = [TradeAction({'money':1}, {resource:1}) for resource in RESOURCES if resource != 'gold']
         CompoundBuilding.__init__(self, 'Peddler', ActionDecision(None, actions), ActionDecision(None, actions))
     def __repr__(self):
-        return '1->R/2->RR'
+        return '{$1}->{R}/{$2}->{R}{R}'
     
 class StoneAlchemistBuilding(CompoundBuilding):
     def __init__(self):
@@ -507,7 +507,7 @@ class StoneAlchemistBuilding(CompoundBuilding):
         actions.append(NullAction())
         CompoundBuilding.__init__(self, 'Alchemist', ActionDecision(None, actions), ActionDecision(None, actions))
     def __repr__(self):
-        return 'RR->G/RRRR->GG'
+        return '{R2}->{G}/{R4}->{G2}'
     
 class StoneProductionBuilding(CompoundBuilding):
     ''' A stone farm, in addition to providing resource to its worker, may provide a choice

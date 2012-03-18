@@ -12,29 +12,37 @@ PLAYER_ID = null
 DIALOG = null
 
 IMAGES = {
-    "{$1}": "/static/img/icons/money/1.png",
-    "{$2}": "/static/img/icons/money/2.png",
-    "{$3}": "/static/img/icons/money/3.png",
-    "{$4}": "/static/img/icons/money/4.png",
-    "{$5}": "/static/img/icons/money/5.png",
-    "{$6}": "/static/img/icons/money/6.png",
-    "{$7}": "/static/img/icons/money/7.png",
+    "{\\$1}": "/static/img/icons/money/1.png",
+    "{\\$2}": "/static/img/icons/money/2.png",
+    "{\\$3}": "/static/img/icons/money/3.png",
+    "{\\$4}": "/static/img/icons/money/4.png",
+    "{\\$5}": "/static/img/icons/money/5.png",
+    "{\\$6}": "/static/img/icons/money/6.png",
+    "{\\$7}": "/static/img/icons/money/7.png",
     "{P1}": "/static/img/icons/points/1.png",
     "{P2}": "/static/img/icons/points/2.png",
     "{P3}": "/static/img/icons/points/3.png",
     "{P4}": "/static/img/icons/points/4.png",
     "{P5}": "/static/img/icons/points/5.png",
+    "{P6}": "/static/img/icons/points/6.png",
+    "{P7}": "/static/img/icons/points/7.png",
+    "{P8}": "/static/img/icons/points/8.png",
+    "{P9}": "/static/img/icons/points/9.png",
     "{F}": "/static/img/icons/cubes/food.png",
     "{W}": "/static/img/icons/cubes/wood.png",
     "{S}": "/static/img/icons/cubes/stone.png",
     "{C}": "/static/img/icons/cubes/cloth.png",
     "{G}": "/static/img/icons/cubes/gold.png",
-    "{R}": "/static/img/icons/cubes/any.png"
+    "{G2}": "/static/img/icons/cubes/gold2.png",
+    "{R}": "/static/img/icons/cubes/any.png",
+    "{R2}": "/static/img/icons/cubes/any2.png",
+    "{R4}": "/static/img/icons/cubes/any4.png"
+
 }
 
 function substitute_images(s){
     $.each(IMAGES, function(key, value){
-        s = s.replace(key, '<img class="icon" src="' + value + '">');
+        s = s.replace(new RegExp(key, 'g'), '<img class="icon" src="' + value + '">');
     });
     return s;
 }

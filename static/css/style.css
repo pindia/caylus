@@ -1,3 +1,7 @@
+#board{
+    background-image:url("/static/img/background.jpg");
+}
+
 #castle, #order, #favors-container{
     height: 100px;
 }
@@ -26,6 +30,7 @@
 .b .owner{
     padding-top: 5px;
     height: 25px;
+    opacity: 0.5;
 }
 
 .b .bailiff {
