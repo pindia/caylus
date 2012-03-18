@@ -167,9 +167,13 @@ function update_board(){
     }
     if(DATA.phase == 5 || DATA.phase == 6)
         $('#b0').addClass('current')
-    
+
+    console.log(DATA.current_decision)
+
     if(DATA.current_decision && DATA.current_decision.player == PLAYER){
         show_decision()
+    } else if (DATA.current_decision){
+        show_decision_wait()
     }
 }
 
@@ -231,6 +235,13 @@ function update_player(i){
         element.append(piece_image('worker', player.name))
         element.children().last().attr('width', 5).addClass('rf'+i)
     }
+}
+
+function show_decision_wait(){
+    var dialog = $('<div>' + DATA.current_decision.player + ' is making a decision... </div>').hide()
+    dialog.dialog({title:'Please wait', closeOnEscape:false});
+    dialog.closest('.ui-dialog').find('.ui-dialog-titlebar-close').hide();
+    DIALOG = dialog
 }
 
 function show_decision(){
