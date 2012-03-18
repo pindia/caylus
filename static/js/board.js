@@ -1,6 +1,11 @@
 DATA = {"turn_logs":[], "buildings": [{"owner": null, "worker": null, "class": "CastleBuilding", "repr": "Castle", "name": "Castle"}, {"owner": null, "worker": 'Blue', "class": "GateBuilding", "repr": "Gate", "name": "Gate"}, {"owner": 'Red', "worker": null, "class": "Building", "repr": "3", "name": "Trading Post"}, {"owner": null, "worker": null, "class": "GuildBuilding", "repr": "Prov", "name": "Merchant's Guild"}, {"owner": null, "worker": null, "class": "Building", "repr": "1C->RF", "name": "Joust Field"}, {"owner": null, "worker": null, "class": "StablesBuilding", "repr": "Stables", "name": "Stables"}, {"owner": null, "worker": null, "class": "InnBuilding", "repr": "Inn", "name": "Inn"}, {"owner": null, "worker": null, "class": "MarketBuilding", "repr": "R->4", "name": "Market"}, {"owner": null, "worker": null, "class": "Building", "repr": "S", "name": "Quarry"}, {"owner": null, "worker": null, "class": "CarpenterBuilding", "repr": "Carpenter", "name": "Carpenter"}, {"owner": null, "worker": null, "class": "Building", "repr": "W", "name": "Sawmill"}, {"owner": null, "worker": null, "class": "Building", "repr": "F/W", "name": "Forest"}, {"owner": null, "worker": null, "class": "Building", "repr": "F/C", "name": "Farm"}, {"owner": null, "worker": null, "class": "PeddlerBuilding", "repr": "2->R", "name": "Peddler"}, {"owner": null, "worker": null, "class": "CarpenterBuilding", "repr": "Carpenter", "name": "Carpenter"}, {"owner": null, "worker": null, "class": "NullBuilding", "repr": "", "name": "Null"}, {"owner": null, "worker": null, "class": "NullBuilding", "repr": "", "name": "Null"}, {"owner": null, "worker": null, "class": "NullBuilding", "repr": "", "name": "Null"}, {"owner": null, "worker": null, "class": "NullBuilding", "repr": "", "name": "Null"}, {"owner": null, "worker": null, "class": "NullBuilding", "repr": "", "name": "Null"}, {"owner": null, "worker": null, "class": "NullBuilding", "repr": "", "name": "Null"}, {"owner": null, "worker": null, "class": "NullBuilding", "repr": "", "name": "Null"}, {"owner": null, "worker": null, "class": "Building", "repr": "G", "name": "Gold Mine"}], "players": [{"name": "Blue", "favors": [-1, -1, -1, -1], "workers": 6, "section_batches": [0, 0, 0], "passed": false, "resources": {"stone": 0, "gold": 0, "food": 2, "money": 5, "cloth": 0, "wood": 1, "points": 0}}], "stables_order": [], "section": 0, "provost": 5, "bailiff": 5, "turn": 0, "step": 0, "pass_order": [], "phase": 0, "castle_order": []}
 RESOURCES = ['food','wood','stone','cloth','gold']
-TRACKS = [["P", "PP", "PPP", "PPPP", "PPPPP"], ["3", "4", "5", "6", "7"], ["F", "W/S", "C", "RR->R", "G"], ["-", "Carp", "Mason", "Lawyer", "Arch"]]
+TRACKS = [
+    ["{P1}", "{P2}", "{P3}", "{P4}", "{P5}"],
+    ["{$3}", "{$4}", "{$5}", "{$6}", "{$7}"],
+    ["{F}", "{W}/{S}", "{C}", "{R}{R}->{R}", "{G}"],
+    ["-", "Carp", "Mason", "Lawyer", "Arch"]
+]
 PLAYERS = ['Blue', 'Red', 'Green', 'Orange', 'Black']
 GAME_ID = null
 PLAYER_ID = null
@@ -10,8 +15,21 @@ IMAGES = {
     "{$1}": "/static/img/icons/money/1.png",
     "{$2}": "/static/img/icons/money/2.png",
     "{$3}": "/static/img/icons/money/3.png",
-    "{$4}": "/static/img/icons/money/4.png"
-
+    "{$4}": "/static/img/icons/money/4.png",
+    "{$5}": "/static/img/icons/money/5.png",
+    "{$6}": "/static/img/icons/money/6.png",
+    "{$7}": "/static/img/icons/money/7.png",
+    "{P1}": "/static/img/icons/points/1.png",
+    "{P2}": "/static/img/icons/points/2.png",
+    "{P3}": "/static/img/icons/points/3.png",
+    "{P4}": "/static/img/icons/points/4.png",
+    "{P5}": "/static/img/icons/points/5.png",
+    "{F}": "/static/img/icons/cubes/food.png",
+    "{W}": "/static/img/icons/cubes/wood.png",
+    "{S}": "/static/img/icons/cubes/stone.png",
+    "{C}": "/static/img/icons/cubes/cloth.png",
+    "{G}": "/static/img/icons/cubes/gold.png",
+    "{R}": "/static/img/icons/cubes/any.png"
 }
 
 function substitute_images(s){
@@ -51,7 +69,7 @@ function init_board(){
         $('#favors').append('<tr id="t' + i + '"></tr>')
         $('#favors').children(':last').append('<td id="t'+i+'c-1">-</td>')
         for(var j=0; j<TRACKS[i].length; j++){
-            $('#favors').children(':last').append('<td id="t'+i+'c'+j+'">'+TRACKS[i][j]+'</td>')
+            $('#favors').children(':last').append('<td id="t'+i+'c'+j+'">'+substitute_images(TRACKS[i][j])+'</td>')
         }
     }
     

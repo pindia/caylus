@@ -34,7 +34,7 @@
      inkscape:pageshadow="2"
      inkscape:zoom="0.70517808"
      inkscape:cx="-604.5"
-     inkscape:cy="94.070867"
+     inkscape:cy="831.47325"
      inkscape:document-units="px"
      inkscape:current-layer="g3029"
      showgrid="true"
@@ -122,16 +122,16 @@
         </g>
       </g>
       <path
-         style="fill:#ff00c5;stroke:#000000;stroke-width:10;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none;fill-opacity:1"
-         d="m -1600,252.36218 200,0 100,-100 0,-199.999997 -200,0 -100,100 z"
+         style="fill:#ff00c5;fill-opacity:1;stroke:#000000;stroke-width:10;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         d="m -1160,252.36218 200,0 100,-100 0,-199.999997 -200,0 -100,100 z"
          id="path3909"
          inkscape:connector-curvature="0"
          inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/path3911.png"
          inkscape:export-xdpi="4.6451612"
          inkscape:export-ydpi="4.6451612" />
       <path
-         style="fill:#ff00c5;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none;fill-opacity:1"
-         d="m -1600,52.362183 200,0 100,-100 -100,100 0,199.999997"
+         style="fill:#ff00c5;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         d="m -1160,52.362183 200,0 100,-100 -100,100 0,199.999997"
          id="path3911"
          inkscape:connector-curvature="0"
          inkscape:export-xdpi="4.6451612"
@@ -146,7 +146,7 @@
          sodipodi:ry="100"
          d="m -800,252.36218 a 100,100 0 1 1 -200,0 100,100 0 1 1 200,0 z"
          transform="translate(-600,400)"
-         inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/text3937.png"
+         inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/money/1.png"
          inkscape:export-xdpi="7.1300001"
          inkscape:export-ydpi="7.1300001" />
       <text
@@ -157,39 +157,46 @@
          id="text3937"
          sodipodi:linespacing="125%"
          inkscape:export-xdpi="7.1300001"
-         inkscape:export-ydpi="7.1300001"><tspan
+         inkscape:export-ydpi="7.1300001"
+         inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/money/1.png"><tspan
            sodipodi:role="line"
            id="tspan3939"
            x="-1547.0742"
            y="704.85046"
            style="font-size:144px">1</tspan></text>
-      <path
-         style="fill:#d35f5f;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-         d="m -1600,902.36218 c 100,-40 100,-40 200,0 20,60 -60,200.00002 -100,200.00002 -40,0 -120,-140.00002 -100,-200.00002 z"
-         id="path3954"
-         inkscape:connector-curvature="0"
-         sodipodi:nodetypes="cccc"
-         inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/text3979-3.png"
-         inkscape:export-xdpi="7.1300001"
-         inkscape:export-ydpi="7.1300001" />
-      <text
-         inkscape:export-ydpi="7.1300001"
-         inkscape:export-xdpi="7.1300001"
-         sodipodi:linespacing="125%"
-         id="text3979"
-         y="1039.8505"
-         x="-1547.0742"
-         style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-         xml:space="preserve"><tspan
-           style="font-size:144px"
-           y="1039.8505"
+      <g
+         id="g4089"
+         inkscape:export-xdpi="6.23"
+         inkscape:export-ydpi="6.23"
+         inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/1.png">
+        <path
+           inkscape:export-ydpi="7.1300001"
+           inkscape:export-xdpi="7.1300001"
+           inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/text3979-3.png"
+           sodipodi:nodetypes="cccc"
+           inkscape:connector-curvature="0"
+           id="path3954"
+           d="m -1600,902.36218 c 100,-40 100,-40 200,0 20,60 -60,200.00002 -100,200.00002 -40,0 -120,-140.00002 -100,-200.00002 z"
+           style="fill:#d35f5f;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+        <text
+           xml:space="preserve"
+           style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
            x="-1547.0742"
-           id="tspan3981"
-           sodipodi:role="line">1</tspan></text>
+           y="1039.8505"
+           id="text3979"
+           sodipodi:linespacing="125%"
+           inkscape:export-xdpi="7.1300001"
+           inkscape:export-ydpi="7.1300001"><tspan
+             sodipodi:role="line"
+             id="tspan3981"
+             x="-1547.0742"
+             y="1039.8505"
+             style="font-size:144px">1</tspan></text>
+      </g>
       <path
          inkscape:export-ydpi="7.1300001"
          inkscape:export-xdpi="7.1300001"
-         inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/text3937.png"
+         inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/money/2.png"
          transform="translate(-300,400)"
          d="m -800,252.36218 a 100,100 0 1 1 -200,0 100,100 0 1 1 200,0 z"
          sodipodi:ry="100"
@@ -207,7 +214,8 @@
          y="705.79968"
          x="-1243.875"
          style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-         xml:space="preserve"><tspan
+         xml:space="preserve"
+         inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/money/2.png"><tspan
            style="font-size:144px"
            y="705.79968"
            x="-1243.875"
@@ -223,7 +231,7 @@
          sodipodi:ry="100"
          d="m -800,252.36218 a 100,100 0 1 1 -200,0 100,100 0 1 1 200,0 z"
          transform="translate(0,400)"
-         inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/text3937.png"
+         inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/3.png"
          inkscape:export-xdpi="7.1300001"
          inkscape:export-ydpi="7.1300001" />
       <text
@@ -234,7 +242,8 @@
          id="text3997"
          sodipodi:linespacing="125%"
          inkscape:export-xdpi="7.1300001"
-         inkscape:export-ydpi="7.1300001"><tspan
+         inkscape:export-ydpi="7.1300001"
+         inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/3.png"><tspan
            sodipodi:role="line"
            id="tspan3999"
            x="-945.52734"
@@ -243,7 +252,7 @@
       <path
          inkscape:export-ydpi="7.1300001"
          inkscape:export-xdpi="7.1300001"
-         inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/text3937.png"
+         inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/4.png"
          transform="translate(300,400)"
          d="m -800,252.36218 a 100,100 0 1 1 -200,0 100,100 0 1 1 200,0 z"
          sodipodi:ry="100"
@@ -261,7 +270,8 @@
          y="704.85046"
          x="-645.28125"
          style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-         xml:space="preserve"><tspan
+         xml:space="preserve"
+         inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/4.png"><tspan
            style="font-size:144px"
            y="704.85046"
            x="-645.28125"
@@ -277,7 +287,7 @@
          sodipodi:ry="100"
          d="m -800,252.36218 a 100,100 0 1 1 -200,0 100,100 0 1 1 200,0 z"
          transform="translate(620,400)"
-         inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/text3937.png"
+         inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/5.png"
          inkscape:export-xdpi="7.1300001"
          inkscape:export-ydpi="7.1300001" />
       <text
@@ -288,7 +298,8 @@
          id="text4009"
          sodipodi:linespacing="125%"
          inkscape:export-xdpi="7.1300001"
-         inkscape:export-ydpi="7.1300001"><tspan
+         inkscape:export-ydpi="7.1300001"
+         inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/5.png"><tspan
            sodipodi:role="line"
            id="tspan4011"
            x="-325.07031"
@@ -297,7 +308,7 @@
       <path
          inkscape:export-ydpi="7.1300001"
          inkscape:export-xdpi="7.1300001"
-         inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/text3937.png"
+         inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/6.png"
          transform="translate(900,400)"
          d="m -800,252.36218 a 100,100 0 1 1 -200,0 100,100 0 1 1 200,0 z"
          sodipodi:ry="100"
@@ -315,7 +326,8 @@
          y="704.85046"
          x="-46.300781"
          style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-         xml:space="preserve"><tspan
+         xml:space="preserve"
+         inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/6.png"><tspan
            style="font-size:144px"
            y="704.85046"
            x="-46.300781"
@@ -331,7 +343,7 @@
          sodipodi:ry="100"
          d="m -800,252.36218 a 100,100 0 1 1 -200,0 100,100 0 1 1 200,0 z"
          transform="translate(1200,400)"
-         inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/text3937.png"
+         inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/7.png"
          inkscape:export-xdpi="7.1300001"
          inkscape:export-ydpi="7.1300001" />
       <text
@@ -342,150 +354,385 @@
          id="text4021"
          sodipodi:linespacing="125%"
          inkscape:export-xdpi="7.1300001"
-         inkscape:export-ydpi="7.1300001"><tspan
+         inkscape:export-ydpi="7.1300001"
+         inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/7.png"><tspan
            sodipodi:role="line"
            id="tspan4023"
            x="254.4375"
            y="704.85046"
            style="font-size:144px">7</tspan></text>
-      <path
-         inkscape:export-ydpi="7.1300001"
-         inkscape:export-xdpi="7.1300001"
-         inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/text3979-3.png"
-         sodipodi:nodetypes="cccc"
-         inkscape:connector-curvature="0"
-         id="path4025"
-         d="m -1300,902.36218 c 100,-40 100,-40 200,0 20,60 -60,200.00002 -100,200.00002 -40,0 -120,-140.00002 -100,-200.00002 z"
-         style="fill:#d35f5f;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-      <text
-         xml:space="preserve"
-         style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-         x="-1243.875"
-         y="1040.7997"
-         id="text4027"
-         sodipodi:linespacing="125%"
-         inkscape:export-xdpi="7.1300001"
-         inkscape:export-ydpi="7.1300001"><tspan
-           sodipodi:role="line"
-           id="tspan4029"
-           x="-1243.875"
+      <g
+         id="g4094"
+         inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/2.png"
+         inkscape:export-xdpi="6.23"
+         inkscape:export-ydpi="6.23">
+        <path
+           style="fill:#d35f5f;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           d="m -1300,902.36218 c 100,-40 100,-40 200,0 20,60 -60,200.00002 -100,200.00002 -40,0 -120,-140.00002 -100,-200.00002 z"
+           id="path4025"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="cccc"
+           inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/text3979-3.png"
+           inkscape:export-xdpi="7.1300001"
+           inkscape:export-ydpi="7.1300001" />
+        <text
+           inkscape:export-ydpi="7.1300001"
+           inkscape:export-xdpi="7.1300001"
+           sodipodi:linespacing="125%"
+           id="text4027"
            y="1040.7997"
-           style="font-size:144px">2</tspan></text>
-      <path
-         style="fill:#d35f5f;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-         d="m -1000,902.36218 c 100,-40 100,-40 200,0 20,60 -60,200.00002 -100,200.00002 -40,0 -120,-140.00002 -100,-200.00002 z"
-         id="path4031"
-         inkscape:connector-curvature="0"
-         sodipodi:nodetypes="cccc"
-         inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/text3979-3.png"
-         inkscape:export-xdpi="7.1300001"
-         inkscape:export-ydpi="7.1300001" />
-      <text
-         inkscape:export-ydpi="7.1300001"
-         inkscape:export-xdpi="7.1300001"
-         sodipodi:linespacing="125%"
-         id="text4033"
-         y="1039.7802"
-         x="-945.52734"
-         style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-         xml:space="preserve"><tspan
-           style="font-size:144px"
-           y="1039.7802"
+           x="-1243.875"
+           style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+           xml:space="preserve"><tspan
+             style="font-size:144px"
+             y="1040.7997"
+             x="-1243.875"
+             id="tspan4029"
+             sodipodi:role="line">2</tspan></text>
+      </g>
+      <g
+         id="g4099"
+         inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/3.png"
+         inkscape:export-xdpi="6.23"
+         inkscape:export-ydpi="6.23">
+        <path
+           inkscape:export-ydpi="7.1300001"
+           inkscape:export-xdpi="7.1300001"
+           inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/text3979-3.png"
+           sodipodi:nodetypes="cccc"
+           inkscape:connector-curvature="0"
+           id="path4031"
+           d="m -1000,902.36218 c 100,-40 100,-40 200,0 20,60 -60,200.00002 -100,200.00002 -40,0 -120,-140.00002 -100,-200.00002 z"
+           style="fill:#d35f5f;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+        <text
+           xml:space="preserve"
+           style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
            x="-945.52734"
-           id="tspan4035"
-           sodipodi:role="line">3</tspan></text>
-      <path
-         inkscape:export-ydpi="7.1300001"
-         inkscape:export-xdpi="7.1300001"
-         inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/text3979-3.png"
-         sodipodi:nodetypes="cccc"
-         inkscape:connector-curvature="0"
-         id="path4041"
-         d="m -700,902.36218 c 100,-40 100,-40 200,0 20,60 -60,200.00002 -100,200.00002 -40,0 -120,-140.00002 -100,-200.00002 z"
-         style="fill:#d35f5f;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-      <text
-         xml:space="preserve"
-         style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-         x="-645.28125"
-         y="1039.8505"
-         id="text4043"
-         sodipodi:linespacing="125%"
-         inkscape:export-xdpi="7.1300001"
-         inkscape:export-ydpi="7.1300001"><tspan
-           sodipodi:role="line"
-           id="tspan4045"
-           x="-645.28125"
+           y="1039.7802"
+           id="text4033"
+           sodipodi:linespacing="125%"
+           inkscape:export-xdpi="7.1300001"
+           inkscape:export-ydpi="7.1300001"><tspan
+             sodipodi:role="line"
+             id="tspan4035"
+             x="-945.52734"
+             y="1039.7802"
+             style="font-size:144px">3</tspan></text>
+      </g>
+      <g
+         id="g4104"
+         inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/4.png"
+         inkscape:export-xdpi="6.23"
+         inkscape:export-ydpi="6.23">
+        <path
+           style="fill:#d35f5f;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           d="m -700,902.36218 c 100,-40 100,-40 200,0 20,60 -60,200.00002 -100,200.00002 -40,0 -120,-140.00002 -100,-200.00002 z"
+           id="path4041"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="cccc"
+           inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/text3979-3.png"
+           inkscape:export-xdpi="7.1300001"
+           inkscape:export-ydpi="7.1300001" />
+        <text
+           inkscape:export-ydpi="7.1300001"
+           inkscape:export-xdpi="7.1300001"
+           sodipodi:linespacing="125%"
+           id="text4043"
            y="1039.8505"
-           style="font-size:144px">4</tspan></text>
-      <path
-         style="fill:#d35f5f;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-         d="m -380,902.36218 c 100,-40 100,-40 200,0 20,60 -60,200.00002 -100,200.00002 -40,0 -120,-140.00002 -100,-200.00002 z"
-         id="path4047"
-         inkscape:connector-curvature="0"
-         sodipodi:nodetypes="cccc"
-         inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/text3979-3.png"
-         inkscape:export-xdpi="7.1300001"
-         inkscape:export-ydpi="7.1300001" />
-      <text
-         inkscape:export-ydpi="7.1300001"
-         inkscape:export-xdpi="7.1300001"
-         sodipodi:linespacing="125%"
-         id="text4049"
-         y="1038.8309"
-         x="-325.07031"
-         style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-         xml:space="preserve"><tspan
-           style="font-size:144px"
-           y="1038.8309"
+           x="-645.28125"
+           style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+           xml:space="preserve"><tspan
+             style="font-size:144px"
+             y="1039.8505"
+             x="-645.28125"
+             id="tspan4045"
+             sodipodi:role="line">4</tspan></text>
+      </g>
+      <g
+         id="g4109"
+         inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/5.png"
+         inkscape:export-xdpi="6.23"
+         inkscape:export-ydpi="6.23">
+        <path
+           inkscape:export-ydpi="7.1300001"
+           inkscape:export-xdpi="7.1300001"
+           inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/text3979-3.png"
+           sodipodi:nodetypes="cccc"
+           inkscape:connector-curvature="0"
+           id="path4047"
+           d="m -380,902.36218 c 100,-40 100,-40 200,0 20,60 -60,200.00002 -100,200.00002 -40,0 -120,-140.00002 -100,-200.00002 z"
+           style="fill:#d35f5f;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+        <text
+           xml:space="preserve"
+           style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
            x="-325.07031"
-           id="tspan4051"
-           sodipodi:role="line">5</tspan></text>
-      <path
-         inkscape:export-ydpi="7.1300001"
-         inkscape:export-xdpi="7.1300001"
-         inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/text3979-3.png"
-         sodipodi:nodetypes="cccc"
-         inkscape:connector-curvature="0"
-         id="path4053"
-         d="m -80,912.36218 c 100,-40 100,-40 200,0 20,60 -60,200.00002 -100,200.00002 -40,0 -120,-140.00002 -100,-200.00002 z"
-         style="fill:#d35f5f;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-      <text
-         xml:space="preserve"
-         style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-         x="-26.300781"
-         y="1049.7802"
-         id="text4055"
-         sodipodi:linespacing="125%"
-         inkscape:export-xdpi="7.1300001"
-         inkscape:export-ydpi="7.1300001"><tspan
-           sodipodi:role="line"
-           id="tspan4057"
-           x="-26.300781"
+           y="1038.8309"
+           id="text4049"
+           sodipodi:linespacing="125%"
+           inkscape:export-xdpi="7.1300001"
+           inkscape:export-ydpi="7.1300001"><tspan
+             sodipodi:role="line"
+             id="tspan4051"
+             x="-325.07031"
+             y="1038.8309"
+             style="font-size:144px">5</tspan></text>
+      </g>
+      <g
+         id="g4114"
+         inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/6.png"
+         inkscape:export-xdpi="6.23"
+         inkscape:export-ydpi="6.23">
+        <path
+           style="fill:#d35f5f;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           d="m -80,912.36218 c 100,-40 100,-40 200,0 20,60 -60,200.00002 -100,200.00002 -40,0 -120,-140.00002 -100,-200.00002 z"
+           id="path4053"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="cccc"
+           inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/text3979-3.png"
+           inkscape:export-xdpi="7.1300001"
+           inkscape:export-ydpi="7.1300001" />
+        <text
+           inkscape:export-ydpi="7.1300001"
+           inkscape:export-xdpi="7.1300001"
+           sodipodi:linespacing="125%"
+           id="text4055"
            y="1049.7802"
-           style="font-size:144px">6</tspan></text>
-      <path
-         style="fill:#d35f5f;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-         d="m 220,912.36218 c 100,-40 100,-40 200,0 20,60 -60,200.00002 -100,200.00002 -40,0 -120,-140.00002 -100,-200.00002 z"
-         id="path4059"
-         inkscape:connector-curvature="0"
-         sodipodi:nodetypes="cccc"
-         inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/text3979-3.png"
-         inkscape:export-xdpi="7.1300001"
-         inkscape:export-ydpi="7.1300001" />
-      <text
-         inkscape:export-ydpi="7.1300001"
-         inkscape:export-xdpi="7.1300001"
-         sodipodi:linespacing="125%"
-         id="text4061"
-         y="1049.8505"
-         x="274.4375"
-         style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-         xml:space="preserve"><tspan
-           style="font-size:144px"
-           y="1049.8505"
+           x="-26.300781"
+           style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+           xml:space="preserve"><tspan
+             style="font-size:144px"
+             y="1049.7802"
+             x="-26.300781"
+             id="tspan4057"
+             sodipodi:role="line">6</tspan></text>
+      </g>
+      <g
+         id="g4119"
+         inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/7.png"
+         inkscape:export-xdpi="6.23"
+         inkscape:export-ydpi="6.23">
+        <path
+           inkscape:export-ydpi="7.1300001"
+           inkscape:export-xdpi="7.1300001"
+           inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/text3979-3.png"
+           sodipodi:nodetypes="cccc"
+           inkscape:connector-curvature="0"
+           id="path4059"
+           d="m 220,912.36218 c 100,-40 100,-40 200,0 20,60 -60,200.00002 -100,200.00002 -40,0 -120,-140.00002 -100,-200.00002 z"
+           style="fill:#d35f5f;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+        <text
+           xml:space="preserve"
+           style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
            x="274.4375"
-           id="tspan4063"
-           sodipodi:role="line">7</tspan></text>
+           y="1049.8505"
+           id="text4061"
+           sodipodi:linespacing="125%"
+           inkscape:export-xdpi="7.1300001"
+           inkscape:export-ydpi="7.1300001"><tspan
+             sodipodi:role="line"
+             id="tspan4063"
+             x="274.4375"
+             y="1049.8505"
+             style="font-size:144px">7</tspan></text>
+      </g>
+      <g
+         id="g4144"
+         inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/-1.png"
+         inkscape:export-xdpi="6.23"
+         inkscape:export-ydpi="6.23">
+        <path
+           style="fill:#ff9955;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           d="m -1600,1172.3622 c 100,-40 100,-40 200,0 20,60 -60,200 -100,200 -40,0 -120,-140 -100,-200 z"
+           id="path4065"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="cccc"
+           inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/text3979-3.png"
+           inkscape:export-xdpi="7.1300001"
+           inkscape:export-ydpi="7.1300001" />
+        <text
+           inkscape:export-ydpi="7.1300001"
+           inkscape:export-xdpi="7.1300001"
+           sodipodi:linespacing="125%"
+           id="text4067"
+           y="1309.8505"
+           x="-1568.6953"
+           style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+           xml:space="preserve"><tspan
+             style="font-size:144px"
+             y="1309.8505"
+             x="-1568.6953"
+             id="tspan4069"
+             sodipodi:role="line">-1</tspan></text>
+      </g>
+      <g
+         id="g4139"
+         inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/-2.png"
+         inkscape:export-xdpi="6.23"
+         inkscape:export-ydpi="6.23">
+        <path
+           inkscape:export-ydpi="7.1300001"
+           inkscape:export-xdpi="7.1300001"
+           inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/text3979-3.png"
+           sodipodi:nodetypes="cccc"
+           inkscape:connector-curvature="0"
+           id="path4071"
+           d="m -1300,1172.3622 c 100,-40 100,-40 200,0 20,60 -60,200 -100,200 -40,0 -120,-140 -100,-200 z"
+           style="fill:#ff9955;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+        <text
+           xml:space="preserve"
+           style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+           x="-1268.1328"
+           y="1310.7997"
+           id="text4073"
+           sodipodi:linespacing="125%"
+           inkscape:export-xdpi="7.1300001"
+           inkscape:export-ydpi="7.1300001"><tspan
+             sodipodi:role="line"
+             id="tspan4075"
+             x="-1268.1328"
+             y="1310.7997"
+             style="font-size:144px">-2</tspan></text>
+      </g>
+      <g
+         id="g4133"
+         inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/-3.png"
+         inkscape:export-xdpi="6.23"
+         inkscape:export-ydpi="6.23">
+        <path
+           style="fill:#ff9955;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           d="m -1000,1172.3622 c 100,-40 100,-40 200,0 20,60 -60,200 -100,200 -40,0 -120,-140 -100,-200 z"
+           id="path4077"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="cccc"
+           inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/text3979-3.png"
+           inkscape:export-xdpi="7.1300001"
+           inkscape:export-ydpi="7.1300001" />
+        <g
+           id="g4129">
+          <text
+             xml:space="preserve"
+             style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+             x="-969.57422"
+             y="1309.7802"
+             id="text4079"
+             sodipodi:linespacing="125%"
+             inkscape:export-xdpi="7.1300001"
+             inkscape:export-ydpi="7.1300001"><tspan
+               sodipodi:role="line"
+               id="tspan4081"
+               x="-969.57422"
+               y="1309.7802"
+               style="font-size:144px">-3</tspan></text>
+        </g>
+      </g>
+      <g
+         id="g4124"
+         inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/-4.png"
+         inkscape:export-xdpi="6.23"
+         inkscape:export-ydpi="6.23">
+        <path
+           inkscape:export-ydpi="7.1300001"
+           inkscape:export-xdpi="7.1300001"
+           inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/text3979-3.png"
+           sodipodi:nodetypes="cccc"
+           inkscape:connector-curvature="0"
+           id="path4083"
+           d="m -720,1172.3622 c 100,-40 100,-40 200,0 20,60 -60,200 -100,200 -40,0 -120,-140 -100,-200 z"
+           style="fill:#ff9955;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+        <text
+           xml:space="preserve"
+           style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+           x="-691.29688"
+           y="1309.8505"
+           id="text4085"
+           sodipodi:linespacing="125%"
+           inkscape:export-xdpi="7.1300001"
+           inkscape:export-ydpi="7.1300001"><tspan
+             sodipodi:role="line"
+             id="tspan4087"
+             x="-691.29688"
+             y="1309.8505"
+             style="font-size:144px">-4</tspan></text>
+      </g>
+      <path
+         inkscape:export-ydpi="4.6451612"
+         inkscape:export-xdpi="4.6451612"
+         inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/path4174.png"
+         inkscape:connector-curvature="0"
+         id="path4172"
+         d="m -1600,252.36218 200,0 100,-100 0,-199.999997 -200,0 -100,100 z"
+         style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:10;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <path
+         inkscape:export-ydpi="4.6451612"
+         inkscape:export-xdpi="4.6451612"
+         inkscape:connector-curvature="0"
+         id="path4174"
+         d="m -1600,52.362183 200,0 100,-100 -100,100 0,199.999997"
+         style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <path
+         inkscape:export-ydpi="4.6451612"
+         inkscape:export-xdpi="4.6451612"
+         inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/wood.png"
+         inkscape:connector-curvature="0"
+         id="path4176"
+         d="m -780,252.36218 200,0 100,-100 0,-199.999997 -200,0 -100,100 z"
+         style="fill:#a05a2c;fill-opacity:1;stroke:#000000;stroke-width:10;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <path
+         inkscape:export-ydpi="4.6451612"
+         inkscape:export-xdpi="4.6451612"
+         inkscape:connector-curvature="0"
+         id="path4178"
+         d="m -780,52.362183 200,0 100,-100 -100,100 0,199.999997"
+         style="fill:#a05a2c;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/wood.png" />
+      <path
+         style="fill:#808080;fill-opacity:1;stroke:#000000;stroke-width:10;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         d="m -400,252.36218 200,0 100,-100 0,-199.999997 -200,0 -100,100 z"
+         id="path4180"
+         inkscape:connector-curvature="0"
+         inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/stone.png"
+         inkscape:export-xdpi="4.6451612"
+         inkscape:export-ydpi="4.6451612" />
+      <path
+         inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/stone.png"
+         style="fill:#808080;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         d="m -400,52.362183 200,0 100,-100 -100,100 0,199.999997"
+         id="path4182"
+         inkscape:connector-curvature="0"
+         inkscape:export-xdpi="4.6451612"
+         inkscape:export-ydpi="4.6451612" />
+      <path
+         inkscape:export-ydpi="4.6451612"
+         inkscape:export-xdpi="4.6451612"
+         inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/cloth.png"
+         inkscape:connector-curvature="0"
+         id="path4188"
+         d="m -360,-127.63782 200,0 100,-100 0,-200 -200,0 -100,100 z"
+         style="fill:#660080;fill-opacity:1;stroke:#000000;stroke-width:10;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <path
+         inkscape:export-ydpi="4.6451612"
+         inkscape:export-xdpi="4.6451612"
+         inkscape:connector-curvature="0"
+         id="path4190"
+         d="m -360,-327.63782 200,0 100,-100 -100,100 0,200"
+         style="fill:#660080;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/cloth.png" />
+      <path
+         style="fill:#d4af37;fill-opacity:1;stroke:#000000;stroke-width:10;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         d="m 20,-127.63782 200,0 100,-100 0,-200 -200,0 -100,100 z"
+         id="path4192"
+         inkscape:connector-curvature="0"
+         inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/gold.png"
+         inkscape:export-xdpi="4.6451612"
+         inkscape:export-ydpi="4.6451612" />
+      <path
+         inkscape:export-filename="/Users/pindi/Code/caylus/static/img/icons/gold.png"
+         style="fill:#d4af37;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         d="m 20,-327.63782 200,0 100,-100 -100,100 0,200"
+         id="path4194"
+         inkscape:connector-curvature="0"
+         inkscape:export-xdpi="4.6451612"
+         inkscape:export-ydpi="4.6451612" />
     </g>
   </g>
 </svg>
