@@ -336,7 +336,7 @@ class MarketBuilding(Building):
         self.actions = [TradeAction({resource:1}, {'money':amount}) for resource in RESOURCES]
         self.actions.insert(0, NullAction())
     def __repr__(self):
-        return 'R->%d' % self.amount
+        return 'R->{$%d}' % self.amount
 
 class PeddlerBuilding(Building):
     ''' A peddler building allows the purchase of any resource for money'''
@@ -346,7 +346,7 @@ class PeddlerBuilding(Building):
         self.actions = [TradeAction({'money':amount}, {resource:1}) for resource in RESOURCES if resource != 'gold']
         self.actions.insert(0, NullAction())
     def __repr__(self):
-        return '%d->R' % self.amount
+        return '{$%d}->R' % self.amount
     
 class GuildBuilding(Building):
     def __init__(self, name):

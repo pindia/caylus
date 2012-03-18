@@ -6,6 +6,23 @@ GAME_ID = null
 PLAYER_ID = null
 DIALOG = null
 
+IMAGES = {
+    "{$1}": "/static/img/icons/money/1.png",
+    "{$2}": "/static/img/icons/money/2.png",
+    "{$3}": "/static/img/icons/money/3.png",
+    "{$4}": "/static/img/icons/money/4.png"
+
+}
+
+function substitute_images(s){
+    $.each(IMAGES, function(key, value){
+        s = s.replace(key, '<img class="icon" src="' + value + '">');
+    });
+    return s;
+}
+
+//alert(substitute_images('sdflskdajhfdskj{$1}ad'));
+
 String.prototype.format = function() {
     var formatted = this;
     for (var i = 0; i < arguments.length; i++) {
@@ -150,7 +167,7 @@ function update_building(i){
     element = $('#b' + i)
     element.removeClass('neutral wood stone residence prestige null fixed')
     element.addClass(building.type)
-    element.find('.label').text(building.repr)
+    element.find('.label').html(substitute_images(building.repr))
     element.find('.provost').html(static_piece_image('provost', DATA.provost == i-7))
     element.find('.bailiff').html(static_piece_image('bailiff', DATA.bailiff == i-7))
     element.find('.owner').html(piece_image('house',building.owner))

@@ -6,6 +6,10 @@
     height: 80px;
 }
 
+.icon{
+    vertical-align: middle;
+}
+
 .b{
     
     background-color: #DDDDDD;

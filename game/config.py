@@ -5,9 +5,11 @@ def format_resources(resources):
     out = []
     for resource, amount in resources.items():
         if resource == 'money':
-            out += [str(amount)]
+            out += ['{$%s}' % str(amount)]
+        elif resource == 'points':
+            out += ['{P%s}' % str(amount)]
         else:
-            out += [resource[0].upper()] * amount
+            out += ['{%s}' % resource[0].upper()] * amount
     out.sort()
     return ''.join(out)
     
