@@ -12,6 +12,7 @@ PLAYER_ID = null
 DIALOG = null
 
 IMAGES = {
+    "{\\$b}": "/static/img/icons/money/blank.png",
     "{\\$1}": "/static/img/icons/money/1.png",
     "{\\$2}": "/static/img/icons/money/2.png",
     "{\\$3}": "/static/img/icons/money/3.png",
@@ -19,6 +20,7 @@ IMAGES = {
     "{\\$5}": "/static/img/icons/money/5.png",
     "{\\$6}": "/static/img/icons/money/6.png",
     "{\\$7}": "/static/img/icons/money/7.png",
+    "{Pb}": "/static/img/icons/points/blank.png",
     "{P1}": "/static/img/icons/points/1.png",
     "{P2}": "/static/img/icons/points/2.png",
     "{P3}": "/static/img/icons/points/3.png",
@@ -215,20 +217,20 @@ function update_building(i){
 function update_player(i){
     player = DATA.players[i]
     $('#p{0}n'.format(i)).text(player.name)
-    $('#p{0}p'.format(i)).text(player.resources['points'] + 'P')
-    $('#p{0}m'.format(i)).text('$' + player.resources['money'])
+    $('#p{0}p'.format(i)).html(substitute_images('{Pb}') + player.resources['points'])
+    $('#p{0}m'.format(i)).html(substitute_images('{$b}') + player.resources['money'])
     resources = ' '
     for(var j in RESOURCES){
         resource = RESOURCES[j]
         if(player.resources[resource] > 0)
         {
             for(var k=0; k<player.resources[resource]; k++){
-                resources += resource[0].toUpperCase()
+                resources += '{' + resource[0].toUpperCase() + '}';
             }
             resources += ' '
         }
     }
-    $('#p{0}r'.format(i)).text(resources)
+    $('#p{0}r'.format(i)).html(substitute_images(resources))
     
     // Royal favor board
     $('.rf' + i).remove()
