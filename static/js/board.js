@@ -238,7 +238,7 @@ function update_player(i){
 }
 
 function show_decision_wait(){
-    var dialog = $('<div>' + DATA.current_decision.player + ' is making a decision... </div>').hide()
+    var dialog = DIALOG.html('<div>' + DATA.current_decision.player + ' is making a decision... </div>')
     dialog.dialog({title:'Please wait', closeOnEscape:false});
     dialog.closest('.ui-dialog').find('.ui-dialog-titlebar-close').hide();
     DIALOG = dialog
@@ -258,7 +258,7 @@ function show_decision(){
 
 
 function show_action_decision(){
-    var dialog = $('<div></div>').hide()
+    var dialog = DIALOG.html('<div></div>')
     for(var i=0; i<DECISION.actions.length; i++){
         dialog.append('<div class="btn" i="'+i+'">');
         dialog.children().last().html(substitute_images(DECISION.actions[i].repr));
@@ -275,9 +275,9 @@ function show_action_decision(){
 }
 
 function show_worker_decision(){
-    var dialog = $('<div></div>').hide()
-    dialog.append('Click a building or <input type="button" i="0" value="Pass">')
-    dialog.children().last().click(function(){
+    var dialog = DIALOG.html('<div></div>')
+    dialog.append('Click a building or <input type="button" i="0" value="Pass"><br>Players passed: {0}'.format(DATA.pass_order.length))
+    dialog.find('input').click(function(){
         $('.b').removeClass('available')
         submit_decision($(this).attr('i'))
     });
@@ -294,7 +294,7 @@ function show_worker_decision(){
 }
 
 function show_favor_track_decision(){
-    var dialog = $('<div></div>').hide()
+    var dialog = DIALOG.html('<div></div>')
     for(var i=0; i<DECISION.tracks.length; i++){
         dialog.append('<input type="button" i="'+i+'"value="'+DECISION.tracks[i]+'">')
         dialog.children().last().click(button_clicked)
@@ -311,18 +311,18 @@ function button_clicked(){
 
 function submit_decision(i){
     $('.ui-dialog-content').text('Submitting... ' + i)
-    dialog = DIALOG
-    DIALOG = null
+    //dialog = DIALOG
+    //DIALOG = null
     $.post('submit', {'id':GAME_ID, 'i':i}, function(data){
-        dialog.dialog('close')
+        //dialog.dialog('close')
     });
 }
 
 function update_received(message){
-    if(DIALOG){
-        DIALOG.dialog('close')
-        DIALOG = null
-    }
+    //if(DIALOG){
+    //    DIALOG.dialog('close')
+    //    DIALOG = null
+    //}
     DATA = $.parseJSON(message)
     update_board()
     //show_decision()
@@ -347,10 +347,10 @@ function perform_connect(){
               'player':$('#player').attr('value'),
               'create':($('#create').is(':checked') ? '1' : '0')}
     $('.ui-dialog-content').text('Connecting... ' )
-    dialog = DIALOG
-    DIALOG = null
+    //dialog = DIALOG
+    //DIALOG = null
     $.getJSON('connect', params, function(data) {
-        dialog.dialog('close')
+        //dialog.dialog('close')
         DATA = data
         init_board()
         update_board()
