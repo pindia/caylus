@@ -107,7 +107,7 @@ class ConstructAction(TradeAction):
             player.game.normal_buildings.append(self.building)
         self.building.owner = player
         self.building.worker = None
-        player.game.log('%s gains %d points from building construction', player, self.building.points)
+        player.game.log('%s gains {P%d} from building construction', player, self.building.points)
         player.points += self.building.points
         if hasattr(self.building, 'favors'):
             player.game.log('%s gains %d royal favors from building construction', player, self.building.favors)
@@ -178,7 +178,7 @@ class ArchitectAction(TradeAction):
                 player.game.decision_stack.append(FavorTrackDecision(player))
                 
     def __repr__(self):
-        return '[Residence]+%s->[Prestige](%dP %dF %dI)' % (format_resources(self.input),
+        return '[Residence]+%s->[Prestige]({P%d} %dRF +{$%d})' % (format_resources(self.input),
                                              self.result.points, self.result.favors, self.result.income)
 
 class FavorAction(Action):
@@ -262,6 +262,12 @@ class Building(object):
         self.actions = actions
         self.worker = None
         self.owner = None
+
+    def __eq__(self, other):
+        return self.name == other.name
+
+    def __hash__(self):
+        return hash(self.name)
         
     def activate(self, player):
         actions = [action for action in self.actions if action.can_execute(player)]
@@ -308,7 +314,7 @@ class ResidenceBuilding(IncomeBuilding, UnusableBuilding):
         self.income = 1
         
     def __repr__(self):
-        return 'Residence [+1]'
+        return 'Residence [+{$1}]'
     
 class PrestigeBuilding(UnusableBuilding):
     def __init__(self, name):
@@ -326,7 +332,7 @@ class PrestigeIncomeBuilding(IncomeBuilding, PrestigeBuilding):
         self.income = income
         
     def __repr__(self):
-        return 'Prestige [+%d]' % ( self.income)
+        return 'Prestige [+{$%d}]' % ( self.income)
         
 class MarketBuilding(Building):
     ''' A market building allows the sale of any resource for money'''
@@ -550,7 +556,7 @@ class ResourceTrackTwoForOneBuilding(CompoundBuilding):
         return self.player
         
     def __repr__(self):
-        return 'RR->R'
+        return '{R}->{R2}'
 
 castle = CastleBuilding()
 gate = GateBuilding("Gate")

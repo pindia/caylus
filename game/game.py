@@ -84,7 +84,7 @@ class Game(object):
                     if isinstance(building, IncomeBuilding) and building.owner == player:
                         income += building.income
                 player.money += income
-                self.log("%s receives income of %d", player, income)
+                self.log("%s receives income of {$%d}", player, income)
 
             self.phase += 1 # No decisions in the income phase; proceed immediately
         if self.phase == PHASE_PLACE:
@@ -177,7 +177,7 @@ class Game(object):
                 for i, player in enumerate(self.castle_order):
                     num = self.castle_batches[i]
                     if num == 0 and not hasattr(player, 'penalty_immune'):
-                        self.log('%s is assessed 2 point penalty for not building', player)
+                        self.log('%s is assessed {P-2} penalty for not building', player)
                         player.points -= 2
                 if not sum(self.castle_batches):
                     self.phase += 1
@@ -197,7 +197,7 @@ class Game(object):
                 self.bailiff += 2 if self.provost > self.bailiff else 1
                 self.provost = self.bailiff
                 def penalty(player, num):
-                    self.log('%s is penalized %d points in scoring', player, num)
+                    self.log('%s is penalized {P-%d} in scoring', player, num)
                     player.points -= num
                 def award(player, num):
                     self.log('%s is awarded %d royal favors in scoring', player, num)
@@ -263,7 +263,7 @@ class Game(object):
                         if resource != 'gold':
                             resources += player.resources[resource]
                     bonus = player.money // 4 + resources // 3 + player.resources['gold'] * 3
-                    self.log('%s gains %d end-of-game points', player, bonus)
+                    self.log('%s gains {P%d} end-of-game points', player, bonus)
                     player.points += bonus
                 self.phase = -1
                 return
@@ -316,12 +316,12 @@ class Game(object):
             if building is None: # Player passed
                 self.log('%s passes', player)
                 if not self.pass_order:
-                    self.log('%s gains 1 denier from being first to pass', player)
+                    self.log('%s gains {$1} from being first to pass', player)
                     player.money += 1
                 self.pass_order.append(player)
                 player.passed = True
             else:
-                self.log('%s places worker on %s', player, building)
+                self.log('%s places worker on %s', player, building.name)
                 if isinstance(building, CastleBuilding):
                     self.castle_order.append(player)
                     self.castle_batches.append(0)
@@ -330,7 +330,7 @@ class Game(object):
                 else:
                     building.worker = player
                     if building.owner and building.owner != player:
-                        self.log('%s is awarded 1 point from owned building', building.owner)
+                        self.log('%s is awarded {P1} from owned building', building.owner)
                         building.owner.points += 1
                 player.money -= self.placement_cost(building, player)
                 player.workers -= 1
@@ -364,7 +364,7 @@ class Game(object):
                 if not self.spaces[self.section]:
                     section += 1 # Spill over to the next section
                 player.points += SECTION_POINTS[section]
-                self.log('%s scores %d points from submission of %s', player, SECTION_POINTS[section], format_resources(action.input))
+                self.log('%s scores {P%d} from submission of %s', player, SECTION_POINTS[section], format_resources(action.input))
                 self.spaces[section] -= 1
                 player.section_batches[section] += 1
                     
