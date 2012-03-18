@@ -491,7 +491,7 @@ class WoodPeddlerBuilding(CompoundBuilding):
         actions = [TradeAction({'money':1}, {resource:1}) for resource in RESOURCES if resource != 'gold']
         CompoundBuilding.__init__(self, 'Peddler', ActionDecision(None, actions), ActionDecision(None, actions))
     def __repr__(self):
-        return '{$1}->{R}/{$2}->{R}{R}'
+        return '{$1}->{R}/{$2}->{R2}'
     
 class StoneAlchemistBuilding(CompoundBuilding):
     def __init__(self):

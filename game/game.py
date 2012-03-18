@@ -36,7 +36,7 @@ class Game(object):
         self.normal_buildings += [fixed_gold]
         self.normal_buildings += [NullBuilding("Null")] * 14
 
-        for b in stone_buildings:
+        for b in stone_buildings + wood_buildings:
             self.normal_buildings[self.normal_buildings.index(null_building)] = b
         
         

@@ -3,7 +3,7 @@ RESOURCES = ['food','wood','stone','cloth','gold']
 TRACKS = [
     ["{P1}", "{P2}", "{P3}", "{P4}", "{P5}"],
     ["{$3}", "{$4}", "{$5}", "{$6}", "{$7}"],
-    ["{F}", "{W}/{S}", "{C}", "{R}{R}->{R}", "{G}"],
+    ["{F}", "{W}/{S}", "{C}", "{R}->{R2}", "{G}"],
     ["-", "Carp", "Mason", "Lawyer", "Arch"]
 ]
 PLAYERS = ['Blue', 'Red', 'Green', 'Orange', 'Black']
@@ -29,9 +29,14 @@ IMAGES = {
     "{P8}": "/static/img/icons/points/8.png",
     "{P9}": "/static/img/icons/points/9.png",
     "{F}": "/static/img/icons/cubes/food.png",
+    "{F2}": "/static/img/icons/cubes/food2.png",
     "{W}": "/static/img/icons/cubes/wood.png",
+    "{W2}": "/static/img/icons/cubes/wood2.png",
     "{S}": "/static/img/icons/cubes/stone.png",
+    "{S2}": "/static/img/icons/cubes/stone2.png",
     "{C}": "/static/img/icons/cubes/cloth.png",
+    "{C2}": "/static/img/icons/cubes/cloth2.png",
+    "{C3}": "/static/img/icons/cubes/cloth3.png",
     "{G}": "/static/img/icons/cubes/gold.png",
     "{G2}": "/static/img/icons/cubes/gold2.png",
     "{R}": "/static/img/icons/cubes/any.png",
