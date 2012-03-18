@@ -47,6 +47,8 @@ class Game(object):
         
         self.bailiff = INITIAL_BAILIFF
         self.provost = INITIAL_BAILIFF
+
+        self.turn_logs = []
         
     def begin_turn(self):
         self.turn += 1
@@ -415,10 +417,14 @@ class Game(object):
         
     def log(self, message, player=None, *args):
         if not player:
-            logging.getLogger('game').info('[Log][%s]' % self.id + message)
+            rendered =  message
         else:
-            logging.getLogger('game').info('[Log][%s]' % self.id + message % ((player.name,) + args))
-        
+            rendered = message % ((player.name,) + args)
+        logging.getLogger('game').info('[Log][%s]' % self.id + rendered)
+        self.turn_logs.append(rendered)
+
+
+
 if __name__ == '__main__':
     game = Game(players=1, player_class=TextPlayer)
     game.continuous = True
