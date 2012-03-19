@@ -16,6 +16,11 @@
     padding-right: 1px;
 }
 
+.icon-float{
+    position:absolute;
+    opacity: 0.5;
+}
+
 .b{
     
     background-color: #DDDDDD;
@@ -23,14 +28,13 @@
     height: 80px;
     text-align: center;
     outline: 1px solid black;
-
+    opacity: 0.8;
 }
 
 
 .b .owner{
     padding-top: 5px;
     height: 25px;
-    opacity: 0.5;
 }
 
 .b .bailiff {

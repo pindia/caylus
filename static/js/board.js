@@ -11,6 +11,7 @@ GAME_ID = null
 PLAYER_ID = null
 DIALOG = null
 
+
 IMAGES = {
     "{\\$b}": "/static/img/icons/money/blank.png",
     "{\\$1}": "/static/img/icons/money/1.png",
@@ -30,6 +31,10 @@ IMAGES = {
     "{P7}": "/static/img/icons/points/7.png",
     "{P8}": "/static/img/icons/points/8.png",
     "{P9}": "/static/img/icons/points/9.png",
+    "{P-1}": "/static/img/icons/points/-1.png",
+    "{P-2}": "/static/img/icons/points/-2.png",
+    "{P-3}": "/static/img/icons/points/-3.png",
+    "{P-4}": "/static/img/icons/points/-4.png",
     "{F}": "/static/img/icons/cubes/food.png",
     "{F2}": "/static/img/icons/cubes/food2.png",
     "{W}": "/static/img/icons/cubes/wood.png",
@@ -43,7 +48,13 @@ IMAGES = {
     "{G2}": "/static/img/icons/cubes/gold2.png",
     "{R}": "/static/img/icons/cubes/any.png",
     "{R2}": "/static/img/icons/cubes/any2.png",
-    "{R4}": "/static/img/icons/cubes/any4.png"
+    "{R4}": "/static/img/icons/cubes/any4.png",
+    "{Fs}": "/static/img/icons/cubes/small/food.png",
+    "{Ws}": "/static/img/icons/cubes/small/wood.png",
+    "{Ss}": "/static/img/icons/cubes/small/stone.png",
+    "{Cs}": "/static/img/icons/cubes/small/cloth.png",
+    "{Gs}": "/static/img/icons/cubes/small/gold.png"
+
 
 }
 
@@ -225,7 +236,7 @@ function update_player(i){
         if(player.resources[resource] > 0)
         {
             for(var k=0; k<player.resources[resource]; k++){
-                resources += '{' + resource[0].toUpperCase() + '}';
+                resources += '{' + resource[0].toUpperCase() + 's}';
             }
             resources += ' '
         }
