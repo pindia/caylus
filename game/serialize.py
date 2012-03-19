@@ -54,8 +54,9 @@ def game_to_json(game):
         info['players'].append(player_to_json(player))
     for building in game.buildings:
         info['buildings'].append(building_to_json(building))
-    if hasattr(game, 'current_decision'):
+    if hasattr(game, 'current_decision') and game.current_decision is not None:
         info['current_decision'] = decision_to_json(game.current_decision)
+    info['over'] = game.over
     return simplejson.dumps(info)
     
 def action_to_json(action):

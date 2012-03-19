@@ -32,6 +32,10 @@ class WebPlayer(Player):
         queue = MessageQueue.get_queue(self.game.id)
         queue.new_messages([game_to_json(self.game)])
 
+    def game_over(self):
+        queue = MessageQueue.get_queue(self.game.id)
+        queue.new_messages([game_to_json(self.game)])
+
 class Application(tornado.web.Application):
     def __init__(self):
         handlers = [

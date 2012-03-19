@@ -58,7 +58,7 @@
 }
 
 .current {
-    outline: 2px solid red;
+    outline: 5px solid red;
 }
 
 .wood { background-color: #E0B97E; }

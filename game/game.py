@@ -53,6 +53,10 @@ class Game(object):
         self.provost = INITIAL_BAILIFF
 
         self.turn_logs = []
+
+    @property
+    def over(self):
+        return self.phase == -1
         
     def begin_turn(self):
         self.turn += 1
@@ -188,6 +192,7 @@ class Game(object):
                     largest = max(self.castle_batches)
                     if largest != 0:
                         i = self.castle_batches.index(largest)
+                        self.log('%s wins the royal favor from castle building', self.castle_order[i])
                         self.award_favor(self.castle_order[i])
         if self.phase == PHASE_SCORING:
             if self.step == 1:
@@ -266,6 +271,8 @@ class Game(object):
                     self.log('%s gains {P%d} end-of-game points', player, bonus)
                     player.points += bonus
                 self.phase = -1
+                for player in self.players:
+                    player.game_over()
                 return
             self.begin_turn()
             if self.continuous and self.section != SECTION_OVER:

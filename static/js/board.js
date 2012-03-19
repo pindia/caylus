@@ -173,7 +173,7 @@ function update_board(){
         
     // Create the red highlight
     
-    $('*').removeClass('current')
+    $('.current').removeClass('current')
     if(DATA.phase == 2)
         $('#b' + (DATA.step + 0)).addClass('current')
     if(DATA.phase == 3)
@@ -186,7 +186,10 @@ function update_board(){
 
     console.log(DATA.current_decision)
 
-    if(DATA.current_decision && DATA.current_decision.player == PLAYER){
+    if(DATA.over){
+        show_game_over()
+    }
+    else if(DATA.current_decision && DATA.current_decision.player == PLAYER){
         show_decision()
     } else if (DATA.current_decision){
         show_decision_wait()
@@ -228,6 +231,8 @@ function update_building(i){
 function update_player(i){
     player = DATA.players[i]
     $('#p{0}n'.format(i)).text(player.name)
+    if(player.name == PLAYER)
+        $('#p{0}n'.format(i)).css({'font-weight':'bold'})
     $('#p{0}p'.format(i)).html(substitute_images('{Pb}') + player.resources['points'])
     $('#p{0}m'.format(i)).html(substitute_images('{$b}') + player.resources['money'])
     resources = ' '
@@ -256,6 +261,13 @@ function update_player(i){
 function show_decision_wait(){
     var dialog = DIALOG.html('<div>' + DATA.current_decision.player + ' is making a decision... </div>')
     dialog.dialog({title:'Please wait', closeOnEscape:false});
+    dialog.closest('.ui-dialog').find('.ui-dialog-titlebar-close').hide();
+    DIALOG = dialog
+}
+
+function show_game_over(){
+    var dialog = DIALOG.html('<div>The game is over.</div>')
+    dialog.dialog({title:'Game Over!', closeOnEscape:false});
     dialog.closest('.ui-dialog').find('.ui-dialog-titlebar-close').hide();
     DIALOG = dialog
 }

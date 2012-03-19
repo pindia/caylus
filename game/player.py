@@ -18,6 +18,9 @@ class Player(object):
         
         self.tracks_used = [] # Which favor tracks have been used this phase
         self.when_used = (0,0) # The turn and phase, for purpose of resetting the above
+
+    def game_over(self):
+        pass
         
     def has_resources(self, resources):
         for resource, amount in resources.items():
