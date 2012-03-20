@@ -189,10 +189,8 @@ function update_board(){
     if(DATA.over){
         show_game_over()
     }
-    else if(DATA.current_decision && DATA.current_decision.player == PLAYER){
+    else if(DATA.current_decision){
         show_decision()
-    } else if (DATA.current_decision){
-        show_decision_wait()
     }
 }
 
@@ -274,6 +272,9 @@ function show_game_over(){
 
 function show_decision(){
     DECISION = DATA.current_decision
+    //if (DECISION.player != PLAYER){
+    //    show_decision_wait()
+    //}
     if(DATA.current_decision.cls == 'WorkerDecision'){
         show_worker_decision()
     } else if(DATA.current_decision.cls == 'ActionDecision' ||
@@ -282,6 +283,14 @@ function show_decision(){
     } else if(DATA.current_decision.cls == 'FavorTrackDecision'){
         show_favor_track_decision()
     }
+
+    $('.ui-dialog-titlebar').css({'background': DECISION.player});
+    //DIALOG.dialog('enable');
+    if (DECISION.player != PLAYER){
+        DIALOG.find('.btn').addClass('btn-disabled')
+        //show_decision_wait()
+    }
+
 }
 
 
@@ -304,7 +313,7 @@ function show_action_decision(){
 
 function show_worker_decision(){
     var dialog = DIALOG.html('<div></div>')
-    dialog.append('Click a building or <input type="button" i="0" value="Pass"><br>Workers left: {0}<br>Players passed: {1}'.format(DATA.players[PLAYER_ID].workers, DATA.pass_order.length))
+    dialog.append('Click a building or pass. <input type="button" class="btn right" i="0" value="Pass"><br>Workers left: {0}<br>Players passed: {1}'.format(DATA.players[PLAYER_ID].workers, DATA.pass_order.length))
     dialog.find('input').click(function(){
         $('.b').removeClass('available')
         submit_decision($(this).attr('i'))
