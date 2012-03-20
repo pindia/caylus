@@ -369,9 +369,9 @@ function update_received(message){
 
 function show_connect_dialog(){
     var dialog = $('<div></div>')
-    dialog.append('Game ID:<input type="entry" id="game-id" value="0" size="2"> Player:<input type="entry" id="player" value="0" size="2">')
-    dialog.append('<br>Create: <input type="checkbox" id="create">')
-    dialog.append('<br><input type="button" value="Connect">');
+    dialog.append('<form class="form-inline"><label>Game ID:</label><input type="entry" class="span1" id="game-id" value="0"><label>Player:</label><input type="entry" class="span1" id="player" value="0">')
+    dialog.append('<label class="checkbox">Create: <input type="checkbox" id="create"></label>')
+    dialog.append('<br><input type="button" value="Connect"></form>');
     dialog.children('input[type="button"]').click(perform_connect)
     dialog.dialog({title:'Connect to Server', closeOnEscape:false});
     dialog.closest('.ui-dialog').find('.ui-dialog-titlebar-close').hide();

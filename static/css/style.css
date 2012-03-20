@@ -1,6 +1,6 @@
 #board{
     background-image:url("/static/img/background.jpg");
-    background-position: 0px 20px;
+    background-position: bottom;
 }
 
 #castle, #order, #favors-container{
@@ -23,6 +23,10 @@
     border: 1px solid black;
 }
 
+table#players {
+    background-color: rgba(255,255,255, 0.3);
+}
+
 .right{
     float: right;
 }
@@ -38,14 +42,20 @@
     opacity: 0.5;
 }
 
+
+#b0, #b1, #b2, #b3, #b4, #b5, #b6, #b13, #b14{
+
+}
+
 .b{
-    
-    background-color: #DDDDDD;
+
+    background-color: rgba(255,255,255, 0.3);
     margin-bottom: 10px;
     height: 80px;
     text-align: center;
-    outline: 1px solid black;
-    opacity: 0.8;
+    outline: 2px solid brown;
+    opacity: 1.0;
+    font-weight: bold;
 }
 
 
@@ -83,4 +93,4 @@
 .neutral { background-color: #E0BFB4; }
 .residence {background-color: #74B980; }
 .prestige {background-color: #85B0D5;}
-.null {background-color: #FFFFFF; }
+/*.null {background-color: #FFFFFF; }*/
