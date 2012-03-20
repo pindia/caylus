@@ -287,7 +287,8 @@ function show_decision(){
     $('.ui-dialog-titlebar').css({'background': DECISION.player});
     //DIALOG.dialog('enable');
     if (DECISION.player != PLAYER){
-        DIALOG.find('.btn').addClass('btn-disabled')
+        DIALOG.find('.btn').addClass('disabled').unbind('click')
+        DIALOG.dialog({title:'{0} is making a decision...'.format(DECISION.player)})
         //show_decision_wait()
     }
 
