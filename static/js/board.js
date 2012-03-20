@@ -304,7 +304,7 @@ function show_action_decision(){
 
 function show_worker_decision(){
     var dialog = DIALOG.html('<div></div>')
-    dialog.append('Click a building or <input type="button" i="0" value="Pass"><br>Players passed: {0}'.format(DATA.pass_order.length))
+    dialog.append('Click a building or <input type="button" i="0" value="Pass"><br>Workers left: {0}<br>Players passed: {1}'.format(DATA.players[PLAYER_ID].workers, DATA.pass_order.length))
     dialog.find('input').click(function(){
         $('.b').removeClass('available')
         submit_decision($(this).attr('i'))
@@ -324,7 +324,8 @@ function show_worker_decision(){
 function show_favor_track_decision(){
     var dialog = DIALOG.html('<div></div>')
     for(var i=0; i<DECISION.tracks.length; i++){
-        dialog.append('<input type="button" i="'+i+'"value="'+DECISION.tracks[i]+'">')
+        dialog.append('<div class="btn" i="'+i+'">')
+        dialog.children().last().text(DECISION.tracks[i])
         dialog.children().last().click(button_clicked)
     }
     dialog.dialog({title:'Royal Favor', closeOnEscape:false});

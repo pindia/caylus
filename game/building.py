@@ -636,11 +636,11 @@ null_building = NullBuilding("Null")
 
 
 
-point_track = [Building(None, ProduceAction(points=p)) for p in range(1, 6)]
-money_track = [Building(None, ProduceAction(money=m)) for m in range(3, 8)]
-resource_track = [Building(None, ProduceAction(food=1)), Building(None, ProduceAction(wood=1), ProduceAction(stone=1)),
+point_track = [Building('points', ProduceAction(points=p)) for p in range(1, 6)]
+money_track = [Building('money', ProduceAction(money=m)) for m in range(3, 8)]
+resource_track = [Building('resource', ProduceAction(food=1)), Building(None, ProduceAction(wood=1), ProduceAction(stone=1)),
                   Building(None, ProduceAction(cloth=1)),ResourceTrackTwoForOneBuilding(),Building(None, ProduceAction(gold=1))]
-building_track = [Building(None, NullAction()), CarpenterBuilding(None, discount=True), MasonBuilding(None, discount=True), LawyerBuilding(None, discount=True), ArchitectBuilding(None)]
+building_track = [Building('building', NullAction()), CarpenterBuilding(None, discount=True), MasonBuilding(None, discount=True), LawyerBuilding(None, discount=True), ArchitectBuilding(None)]
 
 favor_tracks = [point_track, money_track, resource_track, building_track]
 track_names = ['Points', 'Money', 'Resource', 'Building']
